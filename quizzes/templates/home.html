@@ -6,14 +6,14 @@
     <p>Welcome {{ user.username }} !!!</p>
     {% else %}
     <p>
-        <a href="/accounts/login/" class="waves-effect waves-light btn">
+        <a href="{% url 'account_login' %}" class="waves-effect waves-light btn">
             <i class="material-icons left ">check</i> Log In
         </a>
-        <a href="/accounts/signup/" class="waves-effect waves-light btn">
+        <a href="{% url 'account_signup' %}" class="waves-effect waves-light btn">
             <i class="material-icons left">check_circle</i> Sign Up
         </a>
     </p>
-    <a href="/accounts/signup/" title="Sign Up by github">
+    <a href="{% provider_login_url 'github' %}" title="Sign Up by github">
         <img src="https://image.flaticon.com/icons/svg/25/25231.svg" alt="Sign Up by github" height="48" width="48">
     </a>
     {% endif %}

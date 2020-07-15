@@ -1,0 +1,20 @@
+{% include "start.html" %} {% load socialaccount %}
+
+<h1 class="center-align">Quizzess Django</h1>
+<div class="center-align">
+    {% if user.is_authenticated %}
+    <p>Welcome {{ user.username }} !!!</p>
+    {% else %}
+    <p>
+        <a href="/accounts/login/" class="waves-effect waves-light btn">
+            <i class="material-icons left ">check</i> Log In
+        </a>
+        <a href="/accounts/signup/" class="waves-effect waves-light btn">
+            <i class="material-icons left">check_circle</i> Sign In
+        </a>
+    </p>
+    <a href="/accounts/signup/" title="Sign Up by github">
+        <img src="https://image.flaticon.com/icons/svg/25/25231.svg" alt="Sign Up by github" height="48" width="48">
+    </a>
+    {% endif %}
+</div>

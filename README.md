@@ -19,3 +19,4 @@ Quizzes on Django project
 бэк - python/django (версии по вкусу)
 фронт - минимально, можно бутстрап/jquery
 
+* Based on ideas of https://github.com/mirumee/saleor

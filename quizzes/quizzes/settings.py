@@ -78,9 +78,9 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.flickr',
     # 'allauth.socialaccount.providers.foursquare',
     # 'allauth.socialaccount.providers.fxa',
-    # 'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.github',
     # 'allauth.socialaccount.providers.gitlab',
-    'allauth.socialaccount.providers.google',
+    # 'allauth.socialaccount.providers.google',
     # 'allauth.socialaccount.providers.hubic',
     # 'allauth.socialaccount.providers.instagram',
     # 'allauth.socialaccount.providers.jupyterhub',
@@ -147,7 +147,7 @@ ROOT_URLCONF = 'quizzes.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -223,14 +223,11 @@ SITE_ID = 1
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        # For each OAuth based provider, either add a ``SocialApp``
-        # (``socialaccount`` app) containing the required client
-        # credentials, or list them here:
-        'APP': {
-            'client_id': '123',
-            'secret': '456',
-            'key': ''
-        }
-    }
+    'github': {
+        'SCOPE': [
+            'user',
+            'repo',
+            'read:org',
+        ],
+    },
 }

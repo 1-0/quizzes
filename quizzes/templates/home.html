@@ -3,8 +3,13 @@
 <h1 class="center-align">Quizzess Django</h1>
 <div class="center-align">
     {% if user.is_authenticated %}
+    <h1>
+        Hi {{ user.username }} !!!
+    </h1>
     <p>
-        Welcome {{ user.username }} !!!
+        <a href="{% url 'show_user_card' user.username %}" class="waves-effect waves-light">
+            <i class="material-icons left ">account_box</i> User card
+        </a>
     </p>
     {% else %}
     <p>

@@ -1,6 +1,9 @@
 # quizzes
 Quizzes on Django project
 
+## Project structure
+https://github.com/1-0/quizzes/blob/master/project_design/README.md
+
 ## Тестовое задание PYTHON 
 
 Написать мини-платформу для прохождения/создания тестов

@@ -1,35 +1,65 @@
-{% include "start.html" %} {% load socialaccount %}
+{% include "start.html" %} {% load socialaccount %} {% load static %}
+< <script src="{% static 'js/nav.js' %}"></script>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo"><i class="material-icons left ">dvr</i>Quizzess</a>
+            <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                {% if user.is_authenticated %}
+                <li>
+                    {{ user.username }}
+                </li>
+                <li>
+                    <a href="{% url 'account_logout' %}" class="waves-effect waves-light">
+                        <i class="material-icons left ">error_outline</i> Log Out
+                    </a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="{% url 'account_login' %}" class="waves-effect waves-light">
+                        <i class="material-icons left ">check</i> Log In
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'account_signup' %}" class="waves-effect waves-light">
+                        <i class="material-icons left">check_circle</i> Sign Up
+                    </a>
+                </li>
+                <li>
+                    <a href="{% provider_login_url 'github' %}" class="waves-effect waves-light" title="Sign Up by github">
+                        <img src="https://image.flaticon.com/icons/svg/25/25231.svg" alt="Sign Up by github" height="32" width="32">
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
 
-<nav>
-    <div class="nav-wrapper">
-        <a href="#" class="brand-logo"><i class="material-icons left ">dvr</i>Quizzess</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-            {% if user.is_authenticated %}
-            <li>
-                {{ user.username }}
-            </li>
-            <li>
-                <a href="{% url 'account_logout' %}" class="waves-effect waves-light">
-                    <i class="material-icons left ">error_outline</i> Log Out
-                </a>
-            </li>
-            {% else %}
-            <li>
-                <a href="{% url 'account_login' %}" class="waves-effect waves-light">
-                    <i class="material-icons left ">check</i> Log In
-                </a>
-            </li>
-            <li>
-                <a href="{% url 'account_signup' %}" class="waves-effect waves-light">
-                    <i class="material-icons left">check_circle</i> Sign Up
-                </a>
-            </li>
-            <li>
-                <a href="{% provider_login_url 'github' %}" class="waves-effect waves-light" title="Sign Up by github">
-                    <img src="https://image.flaticon.com/icons/svg/25/25231.svg" alt="Sign Up by github" height="32" width="32">
-                </a>
-            </li>
-            {% endif %}
-        </ul>
-    </div>
-</nav>
+    <ul class="sidenav" id="mobile-nav">
+        {% if user.is_authenticated %}
+        <li>
+            {{ user.username }}
+        </li>
+        <li>
+            <a href="{% url 'account_logout' %}" class="waves-effect waves-light">
+                <i class="material-icons left ">error_outline</i> Log Out
+            </a>
+        </li>
+        {% else %}
+        <li>
+            <a href="{% url 'account_login' %}" class="waves-effect waves-light">
+                <i class="material-icons left ">check</i> Log In
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'account_signup' %}" class="waves-effect waves-light">
+                <i class="material-icons left">check_circle</i> Sign Up
+            </a>
+        </li>
+        <li>
+            <a href="{% provider_login_url 'github' %}" class="waves-effect waves-light" title="Sign Up by github">
+                <img src="https://image.flaticon.com/icons/svg/25/25231.svg" alt="Sign Up by github" height="32" width="32">
+            </a>
+        </li>
+        {% endif %}
+    </ul>

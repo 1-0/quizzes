@@ -1,0 +1,6 @@
+{% include "navbar.html" %}
+
+<h1 class="center-align">
+    Show user card {{ user.username }} show_user_card
+</h1>
+{% if valid_user %} ++ {{ valid_user }} ++ {% else %} -- {{ valid_user }} -- {% endif %}

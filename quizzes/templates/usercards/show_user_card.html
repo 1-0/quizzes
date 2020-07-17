@@ -1,6 +1,17 @@
 {% include "navbar.html" %}
 
 <h1 class="center-align">
-    Show user card {{ user.username }} show_user_card
+    User card for {{ user.username }}
 </h1>
-{% if valid_user %} ++ {{ valid_user }} ++ {% else %} -- {{ valid_user }} -- {% endif %}
+{% if valid_user %}
+<p>
+    <a href="{% url 'account_set_password' %}" class="waves-effect waves-light">
+        <i class="material-icons left ">call_made</i> Set password
+    </a>
+</p>
+<p>
+    <a href="{% url 'account_reset_password' %}" class="waves-effect waves-light">
+        <i class="material-icons left ">call_missed_outgoing</i> Reset password
+    </a>
+</p>
+{% else %} -- {{ valid_user }} -- {% endif %}

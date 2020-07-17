@@ -7,6 +7,11 @@
         Hi {{ user.username }} !!!
     </h1>
     <p>
+        <a href="{% url 'show_user_data' user.username %}" class="waves-effect waves-light">
+            <i class="material-icons left ">account_circle</i> User data
+        </a>
+    </p>
+    <p>
         <a href="{% url 'show_user_card' user.username %}" class="waves-effect waves-light">
             <i class="material-icons left ">account_box</i> User card
         </a>

@@ -1,11 +1,11 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
-from quizzes.models import Image
 
 
 class UserCard(models.Model):
     """UserCard - class for user card content"""
     person = models.ForeignKey(User, on_delete=models.CASCADE)
-    photo = Image()
-    birthday = models.DateField()
-    about = models.TextField()
+    photo = models.ImageField(upload_to=settings.MEDIA_URL, blank=True, null=True)
+    birthday = models.DateField(blank=True, null=True)
+    about = models.TextField(blank=True, null=True)

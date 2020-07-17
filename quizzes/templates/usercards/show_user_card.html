@@ -14,5 +14,29 @@
             <i class="material-icons left ">call_missed_outgoing</i> Reset password
         </a>
     </p>
-    {% else %} -- {{ valid_user }} -- {% endif %} {% include "end.html" %}
+
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+       {{ form.as_p }}
+      <button type="submit">Save</button>
+    </form>
+
+<!--    {% if img_obj %}-->
+<!--      <h3>Succesfully uploaded : {{img_obj.title}}</h3>-->
+<!--      <img src="{{ img_obj.image.url}}" alt="connect" style="max-height:300px">-->
+<!--    {% endif %}-->
+
+    {% else %}
+        -- {{ valid_user }} --
+        <table>
+        {% for field in form%}
+            <tr>
+                <td>{{field.label}}</td>
+                <td>{{field.value}}</td>
+            </tr>
+        {% endfor%}
+        </table>
+    {% endif %}
+    {% include "end.html" %}
 </div>

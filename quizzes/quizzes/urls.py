@@ -24,3 +24,6 @@ urlpatterns = [
     path('', Home.as_view(), name='home'),
     path('usercards/<str:user_name>/', include('usercards.urls')),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

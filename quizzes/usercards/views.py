@@ -1,86 +1,69 @@
-from django.shortcuts import render
-from .forms import User, UserCard
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from .forms import UserInfo, UserCard
+from .models import UserCard as UCard
+from django.contrib.auth.decorators import login_required
+from django.forms import formset_factory
 
 
 def show_user_card(request, user_name):
     """show_user_card - show user card page"""
-    if request.method == 'POST' or request.method == 'GET':
+    form = None
+    if request.method == 'GET':
+        u = User.objects.get(username=user_name)
+        user_data = UCard.objects.get(person=u)
         if user_name == request.user.get_username():
-            valid_user = user_name
-            form = UserCard(request.POST, request.FILES, person_id = user_name)
-            if form.is_valid():
-                form.save()
-                # Get the current instance object to display in the template
-                img_obj = form.instance
-                return render(
-                    request,
-                    'usercards/show_user_card.html',
-                    {
-                        'valid_user': valid_user,
-                        'form': form,
-                        'img_obj': img_obj
-                    }
-                )
-            else:
-                form = UserCard(person_id = user_name)
-            return render(
-                request,
-                'usercards/show_user_card.html',
+            UserCardFormSet = formset_factory(UserCard, extra=2)
+            formset = UserCardFormSet(initial=[
                 {
-                    'valid_user': valid_user,
-                    'form': form
+                    'about': user_data.about,
+                    'birthday': user_data.birthday,
                 }
-            )
+            ])
+
+            form = formset[0]
+            valid_user = user_name
         else:
-            form = UserCard(person_id = user_name)
             valid_user = False
         return render(
             request,
             'usercards/show_user_card.html',
             {
+                'user_data': user_data,
+                'user_name': user_name,
                 'valid_user': valid_user,
                 'form': form
             }
         )
 
 
+@login_required
 def show_user_data(request, user_name):
     """show_user_data - show user data page"""
-    if request.method == 'POST' or request.method == 'GET':
+    form = None
+    if request.method == 'GET':
+        user_data = User.objects.get(username=user_name)
         if user_name == request.user.get_username():
-            valid_user = user_name
-            form = User(request.POST, request.FILES)
-            if form.is_valid():
-                form.save()
-                # Get the current instance object to display in the template
-                img_obj = form.instance
-                return render(
-                    request,
-                    'usercards/show_user_card.html',
-                    {
-                        'valid_user': valid_user,
-                        'form': form,
-                        'img_obj': img_obj
-                    }
-                )
-            else:
-                form = User()
-            return render(
-                request,
-                'usercards/show_user_card.html',
+            UserDataFormSet = formset_factory(UserInfo, extra=2)
+            formset = UserDataFormSet(initial=[
                 {
-                    'valid_user': valid_user,
-                    'form': form
+                    'first_name': user_data.first_name,
+                    'last_name': user_data.last_name,
                 }
-            )
+            ])
+
+            form = formset[0]
+            valid_user = user_name
         else:
-            form = User()
             valid_user = False
         return render(
             request,
             'usercards/show_user_card.html',
             {
+                'user_data': user_data,
+                'user_name': user_name,
                 'valid_user': valid_user,
                 'form': form
             }
         )
+

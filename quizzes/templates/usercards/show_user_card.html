@@ -1,42 +1,46 @@
 {% include "navbar.html" %}
 <div class="center-align">
     <h1>
-        User card for {{ user.username }}
+        User card for {{ user_name }}
     </h1>
     {% if valid_user %}
-    <p>
-        <a href="{% url 'account_set_password' %}" class="waves-effect waves-light">
-            <i class="material-icons left ">call_made</i> Set password
-        </a>
-    </p>
-    <p>
-        <a href="{% url 'account_reset_password' %}" class="waves-effect waves-light">
-            <i class="material-icons left ">call_missed_outgoing</i> Reset password
-        </a>
-    </p>
-
-
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-       {{ form.as_p }}
-      <button type="submit">Save</button>
-    </form>
-
-<!--    {% if img_obj %}-->
-<!--      <h3>Succesfully uploaded : {{img_obj.title}}</h3>-->
-<!--      <img src="{{ img_obj.image.url}}" alt="connect" style="max-height:300px">-->
-<!--    {% endif %}-->
-
+        <p>
+            <a href="{% url 'account_set_password' %}" class="waves-effect waves-light">
+                <i class="material-icons left ">call_made</i> Set password
+            </a>
+        </p>
+        <p>
+            <a href="{% url 'account_reset_password' %}" class="waves-effect waves-light">
+                <i class="material-icons left ">call_missed_outgoing</i> Reset password
+            </a>
+        </p> non-editable
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+           {{ form.as_p }}
+          <button type="submit">Save</button>
+        </form>
     {% else %}
-        -- {{ valid_user }} --
-        <table>
-        {% for field in form%}
+    <table>
+        {% if user_data.about %}
             <tr>
-                <td>{{field.label}}</td>
-                <td>{{field.value}}</td>
+                <td>About: </td>
+                <td>{{ user_data.about }}</td>
             </tr>
-        {% endfor%}
-        </table>
+            <tr>
+                <td>Birthday: </td>
+                <td>{{ user_data.birthday }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td>First name: </td>
+                <td>{{ user_data.first_name }}</td>
+            </tr>
+            <tr>
+                <td>Last name: </td>
+                <td>{{ user_data.last_name }}</td>
+            </tr>
+        {% endif %}
+   </table>
     {% endif %}
     {% include "end.html" %}
 </div>

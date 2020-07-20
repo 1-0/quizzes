@@ -20,7 +20,6 @@ def show_user_card(request, user_name):
                     'birthday': user_data.birthday,
                 }
             ])
-
             form = formset[0]
             valid_user = user_name
         else:
@@ -35,35 +34,63 @@ def show_user_card(request, user_name):
                 'form': form
             }
         )
+
+
+def prepare_form_user(user_data):
+    UserDataFormSet = formset_factory(UserInfo, extra=2)
+    formset = UserDataFormSet(initial=[
+        {
+            'first_name': user_data.first_name,
+            'last_name': user_data.last_name,
+        }
+    ])
+    return formset[0]
 
 
 @login_required
 def show_user_data(request, user_name):
     """show_user_data - show user data page"""
     form = None
+    valid_user = False
+    user_data = User.objects.get(username=user_name)
     if request.method == 'GET':
-        user_data = User.objects.get(username=user_name)
         if user_name == request.user.get_username():
-            UserDataFormSet = formset_factory(UserInfo, extra=2)
-            formset = UserDataFormSet(initial=[
-                {
-                    'first_name': user_data.first_name,
-                    'last_name': user_data.last_name,
-                }
-            ])
-
-            form = formset[0]
+            # UserDataFormSet = formset_factory(UserInfo, extra=2)
+            # formset = UserDataFormSet(initial=[
+            #     {
+            #         'first_name': user_data.first_name,
+            #         'last_name': user_data.last_name,
+            #     }
+            # ])
+            # form = formset[0]
+            form = prepare_form_user(user_data)
             valid_user = user_name
-        else:
-            valid_user = False
-        return render(
-            request,
-            'usercards/show_user_card.html',
-            {
-                'user_data': user_data,
-                'user_name': user_name,
-                'valid_user': valid_user,
-                'form': form
-            }
-        )
+    elif request.method == 'POST':
+        if user_name == request.user.get_username():
+            valid_user = user_name
+            form = UserInfo(request.POST)
+            if form.is_valid():
+                user_data.first_name = form.data['form-0-first_name']
+                user_data.last_name = form.data['form-0-last_name']
+                user_data.save()
+                # form.save()
+            # UserDataFormSet = formset_factory(UserInfo, extra=2)
+            # formset = UserDataFormSet(initial=[
+            #     {
+            #         'first_name': user_data.first_name,
+            #         'last_name': user_data.last_name,
+            #     }
+            # ])
+            # form = formset[0]
+            form = prepare_form_user(user_data)
+    return render(
+        request,
+        'usercards/show_user_card.html',
+        {
+            'user_data': user_data,
+            'user_name': user_name,
+            'valid_user': valid_user,
+            'form': form
+        }
+    )
 

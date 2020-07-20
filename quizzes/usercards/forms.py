@@ -14,5 +14,6 @@ class UserCard(forms.ModelForm):
     """Form for the UserCard model"""
     class Meta:
         model = UserCard
-        fields = ('about', 'birthday', 'photo')
+        fields = ('about', 'birthday')
+        # fields = ('about', 'birthday', 'photo')
         # exclude = ('user', )

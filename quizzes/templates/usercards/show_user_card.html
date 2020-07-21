@@ -5,20 +5,15 @@
         User card for {{ user_name }}
     </h1>
     {% if messages %}
-        {% load static %}
-        <script src="{% static 'js/messages.js' %}"></script>
-        <div id="modal1" class="modal">
-            <div class="modal-content">
-                <ul class="messages">
-                {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
-                    {{ message }}
-                </li>
-                {% endfor %}
-                </ul>
-            </div>
-        </div>
+         {% for message in messages %}
+         <script>
+             document.addEventListener(
+                 'DOMContentLoaded', function() {
+                     M.toast({html: '{{ message }}'
+                 });
+             });
+         </script>
+         {% endfor %}
     {% endif %}
     {% if valid_user %}
 
@@ -36,7 +31,7 @@
           {% csrf_token %}
            {{ form.as_p }}
 
-        <button type="submit">Save</button>
+        <button class="waves-effect waves-light btn" type="submit">Save</button>
     </form>
     {% else %}
 
@@ -51,8 +46,8 @@
             <td>Birthday: </td>
             <td>{{ user_data.birthday }}</td>
         </tr>
-        {% else %}
-
+        {% endif %}
+        {% if user_data.first_name %}
         <tr>
             <td>First name: </td>
             <td>{{ user_data.first_name }}</td>

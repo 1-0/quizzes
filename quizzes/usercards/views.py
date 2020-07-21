@@ -32,8 +32,14 @@ def prepare_form_usercard(user_data):
 def show_user(request, user_name):
     """show_user - show user page"""
     form = None
-    user = User.objects.get(username=user_name)
-    user_data = UCard.objects.get(person=user)
+    try:
+        user = User.objects.get(username=user_name)
+    except:
+        user = User()
+    try:
+        user_data = UCard.objects.get(person=user)
+    except:
+        user_data = UCard()
     if request.method == 'GET':
         if user_name == request.user.get_username():
             form = prepare_form_usercard(user_data)
@@ -67,8 +73,14 @@ def show_user(request, user_name):
 def show_user_card(request, user_name):
     """show_user_card - show user card page"""
     form = None
-    user = User.objects.get(username=user_name)
-    user_data = UCard.objects.get(person=user)
+    try:
+        user = User.objects.get(username=user_name)
+    except:
+        user = User()
+    try:
+        user_data = UCard.objects.get(person=user)
+    except:
+        user_data = UCard()
     if request.method == 'GET':
         if user_name == request.user.get_username():
             form = prepare_form_usercard(user_data)
@@ -103,7 +115,10 @@ def show_user_data(request, user_name):
     """show_user_data - show user data page"""
     form = None
     valid_user = False
-    user_data = User.objects.get(username=user_name)
+    try:
+        user_data = UCard.objects.get(person=user)
+    except:
+        user_data = UCard()
     if request.method == 'GET':
         if user_name == request.user.get_username():
             form = prepare_form_user_info(user_data)

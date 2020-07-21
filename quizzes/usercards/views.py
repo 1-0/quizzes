@@ -116,9 +116,9 @@ def show_user_data(request, user_name):
     form = None
     valid_user = False
     try:
-        user_data = UCard.objects.get(person=user)
+        user_data = User.objects.get(username=user_name)
     except:
-        user_data = UCard()
+        user_data = User()
     if request.method == 'GET':
         if user_name == request.user.get_username():
             form = prepare_form_user_info(user_data)

@@ -1,4 +1,5 @@
-{% include "start.html" %} {% load static %}
+{% include "navbar.html" %}
+{% load static %}
 <link href="{% static 'css/card.css' %}" rel="stylesheet">
 <div class="row center-align">
     <div class="col s12 m6">
@@ -11,10 +12,6 @@
                     {% block content %} {% endblock %}
                 </p>
             </div>
-            <!-- <div class="card-action">
-          <a href="#">This is a link</a>
-          <a href="#">This is a link</a>
-        </div> -->
         </div>
     </div>
 </div>

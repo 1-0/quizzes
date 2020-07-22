@@ -29,6 +29,26 @@ def prepare_form_usercard(user_data):
     return formset[0]
 
 
+def prepare_formset_user(user, user_data):
+    UserDataFormSet1 = formset_factory(UserInfo, extra=2)
+    formset1 = UserDataFormSet1(initial=[
+        {
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+        }
+    ])
+    UserCardFormSet2 = formset_factory(UserCard, extra=2)
+    formset2 = UserCardFormSet2(initial=[
+        {
+            'about': user_data.about,
+            'birthday': user_data.birthday,
+        }
+    ])
+    formset1.extend(formset2)
+    return formset1
+
+
+@login_required
 def show_user(request, user_name):
     """show_user - show user page"""
     form = None
@@ -42,7 +62,8 @@ def show_user(request, user_name):
         user_data = UCard()
     if request.method == 'GET':
         if user_name == request.user.get_username():
-            form = prepare_form_usercard(user_data)
+            # form = prepare_form_usercard(user_data)
+            formset = prepare_formset_user(user, user_data)
             valid_user = user_name
         else:
             valid_user = False
@@ -65,7 +86,8 @@ def show_user(request, user_name):
             'user_data': user_data,
             'user_name': user_name,
             'valid_user': valid_user,
-            'form': form
+            'form': form,
+            'formset': formset,
         }
     )
 

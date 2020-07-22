@@ -4,41 +4,25 @@
     <h1>
         User card for {{ user_name }}
     </h1>
-    {% if messages %}
-         {% for message in messages %}
-         <script>
-             document.addEventListener(
-                 'DOMContentLoaded', function() {
-                     M.toast({html: '{{ message }}'});
-             });
-         </script>
-         {% endfor %}
-    {% endif %}
     {% if valid_user %}
-
     <p>
         <a href="{% url 'account_set_password' %}" class="waves-effect waves-light btn">
             <i class="material-icons left ">call_made</i> Set password
-
         </a>
         <a href="{% url 'account_reset_password' %}" class="waves-effect waves-light btn">
             <i class="material-icons left ">call_missed_outgoing</i> Reset password
-
         </a>
     </p>
     <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
            {{ form.as_p }}
-
         <button class="waves-effect waves-light btn" type="submit">
             <i class="material-icons left ">save</i> Save
         </button>
     </form>
     {% else %}
-
     <table>
         {% if user_data.about %}
-
         <tr>
             <td>About: </td>
             <td>{{ user_data.about }}</td>
@@ -58,9 +42,7 @@
             <td>{{ user_data.last_name }}</td>
         </tr>
         {% endif %}
-
     </table>
     {% endif %}
     {% include "end.html" %}
-
 </div>

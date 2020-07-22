@@ -44,13 +44,14 @@ def prepare_formset_user(user, user_data):
             'birthday': user_data.birthday,
         }
     ])
-    formset1.extend(formset2)
-    return formset1
+    formset = [formset1, formset2]
+    return formset
 
 
 @login_required
 def show_user(request, user_name):
     """show_user - show user page"""
+    formset = None
     form = None
     try:
         user = User.objects.get(username=user_name)
@@ -62,7 +63,6 @@ def show_user(request, user_name):
         user_data = UCard()
     if request.method == 'GET':
         if user_name == request.user.get_username():
-            # form = prepare_form_usercard(user_data)
             formset = prepare_formset_user(user, user_data)
             valid_user = user_name
         else:
@@ -70,14 +70,21 @@ def show_user(request, user_name):
     elif request.method == 'POST':
         if user_name == request.user.get_username():
             valid_user = user_name
-            form = UserCard(request.POST)
-            if form.is_valid():
-                user_data.about = form.data['form-0-about']
-                user_data.birthday = form.data['form-0-birthday']
+            form1 = UserInfo(request.POST)
+            form2 = UserCard(request.POST)
+            if form1.is_valid():
+                user_data.first_name = form.data['form-0-first_name']
+                user_data.last_name = form.data['form-0-last_name']
                 user_data.save()
-                messages.add_message(request, messages.SUCCESS, 'Data saved')
+                messages.add_message(request, messages.SUCCESS, 'Data1 saved')
+            if form2.is_valid():
+                user_data.about = form.data['form-1-about']
+                user_data.birthday = form.data['form-1-birthday']
+                user_data.save()
+                messages.add_message(request, messages.SUCCESS, 'Data2 saved')
                 # form.save()
-            form = prepare_form_usercard(user_data)
+            # formset = [form1, form2]
+            formset = prepare_formset_user(user, user_data)
     return render(
         request,
         'usercards/show_user_card.html',
@@ -95,6 +102,7 @@ def show_user(request, user_name):
 def show_user_card(request, user_name):
     """show_user_card - show user card page"""
     form = None
+    formset = None
     try:
         user = User.objects.get(username=user_name)
     except:
@@ -105,7 +113,8 @@ def show_user_card(request, user_name):
         user_data = UCard()
     if request.method == 'GET':
         if user_name == request.user.get_username():
-            form = prepare_form_usercard(user_data)
+            form1 = prepare_form_usercard(user_data)
+            form2 = prepare_form_usercard(user_data)
             valid_user = user_name
         else:
             valid_user = False
@@ -127,7 +136,10 @@ def show_user_card(request, user_name):
             'user_data': user_data,
             'user_name': user_name,
             'valid_user': valid_user,
-            'form': form
+            'form': form,
+            'form1': form1,
+            'form2': form2,
+            'formset': formset,
         }
     )
 
@@ -135,6 +147,7 @@ def show_user_card(request, user_name):
 @login_required
 def show_user_data(request, user_name):
     """show_user_data - show user data page"""
+    formset = None
     form = None
     valid_user = False
     try:
@@ -163,7 +176,8 @@ def show_user_data(request, user_name):
             'user_data': user_data,
             'user_name': user_name,
             'valid_user': valid_user,
-            'form': form
+            'form': form,
+            'formset': formset,
         }
     )
 

@@ -19,7 +19,7 @@ COPY --from=build-python /usr/local/bin/ /usr/local/bin/
 WORKDIR /app/quizzes
 
 RUN SECRET_KEY=dummy STATIC_URL=${STATIC_URL} python3 manage.py collectstatic --no-input
-RUN echo "\nDEBUG = False" > quizzes/settings.py
+RUN echo "\nDEBUG = False" > quizzes/custom_settings.py
 
 RUN mkdir -p /app/quizzes/media /app/quizzes/static \
   && chown -R quizzes:quizzes /app/

@@ -130,3 +130,6 @@ dmypy.json
 
 # Idea
 .idea/
+
+# Custom settings for deploing
+custom_settings.py

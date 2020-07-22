@@ -260,4 +260,7 @@ EMAIL_HOST_PASSWORD= 'password'
 EMAIL_USE_TLS= True
 EMAIL_PORT= 587
 
-from .custom_settings import *
+try:
+    from .custom_settings import *
+except ModuleNotFoundError:
+    pass

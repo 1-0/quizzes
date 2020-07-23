@@ -16,7 +16,6 @@ class UserCard(forms.ModelForm):
         model = UserCard
         fields = ('about', 'birthday')
         # fields = ('about', 'birthday', 'photo')
-        # exclude = ('user', )
 
 
 class UserForm(forms.Form):
@@ -24,6 +23,5 @@ class UserForm(forms.Form):
     first_name = forms.CharField(max_length=200, widget=forms.TextInput)
     last_name = forms.CharField(max_length=200, widget=forms.TextInput)
     about = forms.CharField(widget=forms.Textarea)
-    # birthday = forms.DateField(widget=forms.Media)
     birthday = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     photo = forms.ImageField()

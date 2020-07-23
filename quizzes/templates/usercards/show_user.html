@@ -4,6 +4,12 @@
     <h1>
         User info {{ user_name }}
     </h1>
+    {% if user_data.photo %}
+    <p>
+        <img src="{{ user_data.photo.url }}" alt="User {{ user_name }} image" width="250" height="250">
+    <p/>
+    {% endif %}
+
     {% if valid_user %}
         <a href="{% url 'account_set_password' %}" class="waves-effect waves-light btn">
             <i class="material-icons left ">call_made</i> Set password
@@ -28,18 +34,17 @@
         </form>
     {% else %}
     <table>
-        {% if combined_forms %}
-            {% if user.first_name %}
+        {% if user_contribute %}
             <tr>
                 <td>First name: </td>
-                <td>{{ user.first_name }}</td>
+                <td>{{ user_contribute.first_name }}</td>
             </tr>
             <tr>
                 <td>Last name: </td>
-                <td>{{ user.last_name }}</td>
+                <td>{{ user_contribute.last_name }}</td>
             </tr>
-            {% endif %}
-            {% if user_data.about %}
+        {% endif %}
+        {% if user_data %}
             <tr>
                 <td>About: </td>
                 <td>{{ user_data.about }}</td>
@@ -48,28 +53,6 @@
                 <td>Birthday: </td>
                 <td>{{ user_data.birthday }}</td>
             </tr>
-            {% endif %}
-        {% else %}
-            {% if user_data.about %}
-            <tr>
-                <td>About: </td>
-                <td>{{ user_data.about }}</td>
-            </tr>
-            <tr>
-                <td>Birthday: </td>
-                <td>{{ user_data.birthday }}</td>
-            </tr>
-            {% endif %}
-            {% if user_data.first_name %}
-            <tr>
-                <td>First name: </td>
-                <td>{{ user_data.first_name }}</td>
-            </tr>
-            <tr>
-                <td>Last name: </td>
-                <td>{{ user_data.last_name }}</td>
-            </tr>
-            {% endif %}
         {% endif %}
     </table>
     {% endif %}

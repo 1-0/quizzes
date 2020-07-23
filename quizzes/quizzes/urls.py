@@ -17,6 +17,7 @@ import os
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
 
 from .views import Home
 
@@ -26,8 +27,5 @@ urlpatterns = [
     path('', Home.as_view(), name='home'),
     path('usercards/', include('usercards.urls')),
 ]
-# Base url to serve media files
-MEDIA_URL = '/media/'
-
-# Path where media is stored
-MEDIA_ROOT = os.path.join(settings.BASE_DIR, 'media/')
+if settings.DEBUG:
+     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

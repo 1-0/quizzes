@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .forms import UserInfo, UserCard, UserForm
 from .models import UserCard as UCard
+import datetime
 
 
 def prepare_form_user_info(user_data):
@@ -46,6 +47,7 @@ def prepare_form_user(user_contribute, user_data):
 def show_user(request, user_name):
     """show_user - show user page"""
     form = None
+    valid_user = user_name
     try:
         user_contribute = User.objects.get(username=user_name)
     except:
@@ -56,10 +58,27 @@ def show_user(request, user_name):
         user_data = UCard()
     if request.method == 'GET':
         if user_name == request.user.get_username():
-            valid_user = user_name
             form = prepare_form_user(user_contribute, user_data)
         else:
             valid_user = False
+    if request.method == 'POST':
+        form = UserForm(request.POST, request.FILES)
+        if form.is_valid():
+            user_contribute.first_name = form.data['form-0-first_name']
+            user_contribute.last_name = form.data['form-0-last_name']
+            user_contribute.save()
+            user_data.about = form.data['form-0-about']
+            day = form.data['form-0-birthday'].split('-')
+            user_data.birthday = datetime.date(int(day[0]), int(day[1]), int(day[2]))
+            # user_data.birthday = form.data['form-0-birthday']
+            user_data.save()
+            user_name='valid '+form.data['form-0-first_name']+form.data['form-0-last_name']+form.data['form-0-about']+form.data['form-0-birthday']
+            form = prepare_form_user(user_contribute, user_data)
+            # form.save
+        else:
+            user_name = 'not valid '+form.data['form-0-first_name'] + form.data['form-0-last_name'] + form.data['form-0-about'] + \
+                        form.data['form-0-birthday']
+
     return render(
         request,
         'usercards/show_user.html',

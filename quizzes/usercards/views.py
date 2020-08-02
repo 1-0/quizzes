@@ -3,7 +3,8 @@ from django.forms import formset_factory
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .forms import UserInfo, UserCard, UserForm
+from .forms import *
+# from .forms import UserInfo, UserCard, UserForm
 from .models import UserCard as UCard
 import datetime
 
@@ -92,38 +93,33 @@ def show_user(request, user_name):
     )
 
 
-def show_user_card(request, user_name):
-    """show_user_card - show user card page"""
+@login_required
+def show_user_all(request, user_name):
+    """show_user_data - show user data page"""
     form = None
-    formset = None
+    valid_user = False
     try:
-        user = User.objects.get(username=user_name)
+        user_data = User.objects.get(username=user_name)
     except:
-        user = User()
-    try:
-        user_data = UCard.objects.get(person=user)
-    except:
-        user_data = UCard()
+        user_data = UserAll()
     if request.method == 'GET':
         if user_name == request.user.get_username():
-            form = prepare_form_usercard(user_data)
+            form = UserAll(initial={
+                'first_name': user_data.first_name,
+                'last_name': user_data.last_name,
+                'email': user_data.email,
+            })
             valid_user = user_name
-        else:
-            valid_user = False
     elif request.method == 'POST':
         if user_name == request.user.get_username():
             valid_user = user_name
-            form = UserCard(request.POST)
+            form = UserInfo(request.POST)
             if form.is_valid():
-                user_data.about = form.data['form-0-about']
-                user_data.birthday = form.data['form-0-birthday']
-                user_data.save()
-                messages.add_message(request, messages.SUCCESS, 'Data saved')
-                # form.save()
-            form = prepare_form_usercard(user_data)
+                form.save()
+            messages.add_message(request, messages.SUCCESS, 'Data saved')
     return render(
         request,
-        'usercards/show_user_card.html',
+        'usercards/show_user_all.html',
         {
             'user_data': user_data,
             'user_name': user_name,
@@ -134,39 +130,40 @@ def show_user_card(request, user_name):
 
 
 @login_required
-def show_user_data(request, user_name):
+def show_user_card_all(request, user_name):
     """show_user_data - show user data page"""
-    formset = None
     form = None
     valid_user = False
     try:
-        user_data = User.objects.get(username=user_name)
+        user = User.objects.get(username=user_name)
     except:
-        user_data = User()
+        user = User()
+    try:
+        user_data = UCard.objects.get(person_id=user.id)
+    except:
+        user_data = UCard()
     if request.method == 'GET':
         if user_name == request.user.get_username():
-            form = prepare_form_user_info(user_data)
+            form = UserCardAll(initial={
+                'about': user_data.about,
+                'birthday': user_data.birthday,
+            })
             valid_user = user_name
     elif request.method == 'POST':
         if user_name == request.user.get_username():
             valid_user = user_name
-            form = UserInfo(request.POST)
+            form = UserCardAll(request.POST)
             if form.is_valid():
-                user_data.first_name = form.data['form-0-first_name']
-                user_data.last_name = form.data['form-0-last_name']
-                user_data.save()
-                # form.save()
+                form.save()
             messages.add_message(request, messages.SUCCESS, 'Data saved')
-            form = prepare_form_user_info(user_data)
     return render(
         request,
-        'usercards/show_user_card.html',
+        'usercards/show_user_card_all.html',
         {
             'user_data': user_data,
             'user_name': user_name,
             'valid_user': valid_user,
             'form': form,
-            'formset': formset,
         }
     )
 

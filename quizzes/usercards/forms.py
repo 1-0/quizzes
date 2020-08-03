@@ -1,6 +1,4 @@
 from django import forms
-# from django.forms import modelform_factory, EmailField, DateTimeField
-# from django.forms.widgets import Textarea, TextInput, FileInput, DateInput, EmailInput, DateTimeInput
 from django.contrib.auth.models import User
 from .models import UserCard
 
@@ -26,10 +24,6 @@ class UserAll(forms.ModelForm):
             'email': 'E-mail',
             'date_joined': 'Date Joined',
         }
-        help_texts = {
-            'first_name': 'Enter first name',
-            'last_name': 'Enter last name',
-        }
 
 
 class UserCardAll(forms.ModelForm):
@@ -42,10 +36,6 @@ class UserCardAll(forms.ModelForm):
             'about': 'About',
             'birthday': 'Birthday',
             # 'photo': 'Photo',
-        }
-        help_texts = {
-            'about': 'Enter about',
-            'birthday': 'Enter birthday',
         }
         widgets = {
             'about': forms.Textarea(attrs={'type': 'html'}),

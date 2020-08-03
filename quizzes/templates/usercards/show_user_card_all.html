@@ -11,29 +11,16 @@
         <a href="{% url 'account_reset_password' %}" class="waves-effect waves-light btn">
             <i class="material-icons left ">call_missed_outgoing</i> Reset password
         </a>
-        </p>
-        <form method="post" enctype="multipart/form-data">
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-                   {{ form.as_p }}
+        {{ form.as_p }}
+        {% if valid_user %}
             <button class="waves-effect waves-light btn" type="submit">
                 <i class="material-icons left ">save</i> Save
             </button>
-        </form>
-    {% else %}
-    <table>
-            <tr>
-                <td>About: </td>
-                <td>{{ user_data.about }}</td>
-            </tr>
-            <tr>
-                <td>Birthday: </td>
-                <td>{{ user_data.birthday }}</td>
-            </tr>
-            <tr>
-                <td>photo: </td>
-                <td>{{ user_data.photo }}</td>
-            </tr>
-    </table>
-    {% endif %}
+        {% endif %}
+    </form>
     {% include "end.html" %}
 </div>

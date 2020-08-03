@@ -28,14 +28,16 @@ class UserAll(forms.ModelForm):
 
 class UserCardAll(forms.ModelForm):
 
+    # photo = forms.ImageField()
+
     class Meta:
         model = UserCard
-        fields = ('about', 'birthday')
-        # fields = ('about', 'birthday', 'photo'),
+        # fields = ('about', 'birthday')
+        fields = ('about', 'birthday', 'photo')
         labels = {
             'about': 'About',
             'birthday': 'Birthday',
-            # 'photo': 'Photo',
+            'photo': 'Photo',
         }
         widgets = {
             'about': forms.Textarea(attrs={'type': 'html'}),

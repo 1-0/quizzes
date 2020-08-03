@@ -133,3 +133,6 @@ dmypy.json
 
 # Custom settings for deploing
 custom_settings.py
+
+# Media
+media/

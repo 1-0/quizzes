@@ -116,19 +116,14 @@ def show_user_all(request, user_name):
     elif request.method == 'POST':
         if user_name == request.user.get_username():
             valid_user = user_name
-            form = UserInfo(request.POST or None, instance=user_data)
+            form = UserAll(request.POST or None, request.FILES or None, instance=user_data)
             if form.is_valid():
-                form.save()
-                # user_data.last_name = form.fields['last_name']
-                # user_data.first_name = form.fields.first_name()
-                # user_data.save()
-                # form = UserAll(initial={
-                #     'first_name': user_data.first_name,
-                #     'last_name': user_data.last_name,
-                #     'email': user_data.email,
-                #     'date_joined': user_data.date_joined,
-                # })
-                messages.add_message(request, messages.SUCCESS, 'Data saved')
+                if form.save():
+                    messages.add_message(request, messages.SUCCESS, 'Data saved')
+                else:
+                    messages.add_message(request, messages.SUCCESS, 'Valid Data not saved')
+            else:
+                messages.add_message(request, messages.SUCCESS, 'Not Valid Data not saved')
     return render(
         request,
         'usercards/show_user_all.html',
@@ -167,17 +162,14 @@ def show_user_card_all(request, user_name):
     elif request.method == 'POST':
         if user_name == request.user.get_username():
             valid_user = user_name
-            form = UserCardAll(request.POST or None, instance=user_data)
+            form = UserCardAll(request.POST or None, request.FILES or None, instance=user_data)
             if form.is_valid():
-                form.save()
-                # user_data.birthday = form.fields['birthday']
-                # user_data.about = form.fields['about']
-                # user_data.save()
-                # form = UserCardAll(initial={
-                #     'about': user_data.about,
-                #     'birthday': user_data.birthday,
-                # })
-                messages.add_message(request, messages.SUCCESS, 'Data saved')
+                if form.save():
+                    messages.add_message(request, messages.SUCCESS, 'Data saved')
+                else:
+                    messages.add_message(request, messages.SUCCESS, 'Valid Data not saved')
+            else:
+                messages.add_message(request, messages.SUCCESS, 'Not Valid Data not saved')
     return render(
         request,
         'usercards/show_user_card_all.html',

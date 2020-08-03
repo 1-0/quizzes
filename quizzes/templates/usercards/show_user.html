@@ -2,14 +2,8 @@
 
 <div class="center-align">
     <h1>
-        User info {{ user_name }}
+        User card all for {{ user_name }}
     </h1>
-    {% if user_data.photo %}
-    <p>
-        <img src="{{ user_data.photo.url }}" alt="User {{ user_name }} image" width="250" height="250">
-    <p/>
-    {% endif %}
-
     {% if valid_user %}
         <a href="{% url 'account_set_password' %}" class="waves-effect waves-light btn">
             <i class="material-icons left ">call_made</i> Set password
@@ -17,44 +11,17 @@
         <a href="{% url 'account_reset_password' %}" class="waves-effect waves-light btn">
             <i class="material-icons left ">call_missed_outgoing</i> Reset password
         </a>
-        </p>
+    {% endif %}
+    {% for form in forms %}
         <form method="post" enctype="multipart/form-data">
-        {% if form %}
             {% csrf_token %}
             {{ form.as_p }}
-        {% else %}
-            {% for form in combined_forms %}
-                {% csrf_token %}
-                {{ form.as_p }}
-            {% endfor %}
-        {% endif %}
-            <button class="waves-effect waves-light btn" type="submit">
-                <i class="material-icons left ">save</i> Save
-            </button>
+            {% if valid_user %}
+                <button class="waves-effect waves-light btn" type="submit">
+                    <i class="material-icons left ">save</i> Save
+                </button>
+            {% endif %}
         </form>
-    {% else %}
-    <table>
-        {% if user_contribute %}
-            <tr>
-                <td>First name: </td>
-                <td>{{ user_contribute.first_name }}</td>
-            </tr>
-            <tr>
-                <td>Last name: </td>
-                <td>{{ user_contribute.last_name }}</td>
-            </tr>
-        {% endif %}
-        {% if user_data %}
-            <tr>
-                <td>About: </td>
-                <td>{{ user_data.about }}</td>
-            </tr>
-            <tr>
-                <td>Birthday: </td>
-                <td>{{ user_data.birthday }}</td>
-            </tr>
-        {% endif %}
-    </table>
-    {% endif %}
+    {% endfor %}
     {% include "end.html" %}
 </div>

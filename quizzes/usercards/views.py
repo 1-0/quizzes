@@ -108,6 +108,7 @@ def show_user_all(request, user_name):
                 'first_name': user_data.first_name,
                 'last_name': user_data.last_name,
                 'email': user_data.email,
+                'date_joined': user_data.date_joined,
             })
             valid_user = user_name
     elif request.method == 'POST':

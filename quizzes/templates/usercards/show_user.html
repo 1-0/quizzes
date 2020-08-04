@@ -7,8 +7,6 @@
     {% if user_data.photo %}
     <p>
     {% load static %}
-{#        <img src="{% static user_data.photo.url %}" alt="User {{ user_name }} image" width="250" height="250">#}
-{#        <img src="{% static 'favicon.ico' %}" alt="User {{ user_name }} image" width="250" height="250">#}
         <img src="/static/{{ user_data.photo.url }}" alt="User {{ user_name }} image" width="250" height="250">
     <p/>
     {% endif %}
@@ -21,16 +19,16 @@
             <i class="material-icons left ">call_missed_outgoing</i> Reset password
         </a>
     {% endif %}
-    {% for form in forms %}
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            {% if valid_user %}
-                <button class="waves-effect waves-light btn" type="submit">
-                    <i class="material-icons left ">save</i> Save
-                </button>
-            {% endif %}
-        </form>
-    {% endfor %}
+    <form method="post" enctype="multipart/form-data">
+        {% for form in forms %}
+                {% csrf_token %}
+                {{ form.as_p }}
+        {% endfor %}
+        {% if valid_user %}
+            <button class="waves-effect waves-light btn" type="submit">
+                <i class="material-icons left ">save</i> Save
+            </button>
+        {% endif %}
+    </form>
     {% include "end.html" %}
 </div>

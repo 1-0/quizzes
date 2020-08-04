@@ -36,8 +36,8 @@ def show_user(request, user_name):
         if user_name == request.user.get_username():
             valid_user = user_name
         else:
-            for i in forms.fields:
-                for f in i:
+            for i in forms:
+                for f in i.fields:
                     i.fields[f].disabled = True
     return render(
         request,

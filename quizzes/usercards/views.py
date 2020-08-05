@@ -65,32 +65,32 @@ def show_user(request, user_name):
             if 1 in saved_form:
                 user_data = UCard.objects.get(person_id=user.id)
                 if os.path.exists(old_image):
-                    # os.system('chflags nouchg {}'.format(old_image))
-                    os.system('cacls {} /P everyone:f'.format(old_image))
-                    os.remove(old_image)
                     try:
+                        os.system('chflags nouchg {}'.format(old_image))
+                        os.system('cacls {} /P everyone:f'.format(old_image))
                         os.remove(old_image)
+                        os.rmdir(old_image_dir)
                     except:
                     # except (PermissionError, FileNotFoundError) as e:
-                        msg = 'Can not remove %s file! Exception %s' % (old_image, str(e))
+                    #     msg = 'Can not remove %s file! Exception %s' % (old_image, str(e))
+                        msg = 'Can not remove %s file! Exception' % (old_image)
                         logger.error(msg)
                         messages.add_message(
                             request,
                             messages.ERROR,
                             msg
                         )
-                os.rmdir(old_image_dir)
-                try:
-                    os.rmdir(old_image_dir)
-                except:
-                # except (PermissionError, FileNotFoundError) as e:
-                    msg = 'Can not remove %s folder! Exception %s' % (old_image_dir, str(e))
-                    logger.error(msg)
-                    messages.add_message(
-                        request,
-                        messages.ERROR,
-                        msg
-                    )
+                # try:
+                #     os.rmdir(old_image_dir)
+                # except:
+                # # except (PermissionError, FileNotFoundError) as e:
+                #     msg = 'Can not remove %s folder! Exception %s' % (old_image_dir, str(e))
+                #     logger.error(msg)
+                #     messages.add_message(
+                #         request,
+                #         messages.ERROR,
+                #         msg
+                #     )
             if saved_form:
                 messages.add_message(
                     request,

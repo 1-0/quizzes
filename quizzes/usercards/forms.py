@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from .models import UserCard
 
 
-class UserAll(forms.ModelForm):
+class UserInfo(forms.ModelForm):
 
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={'type': 'email'}),
@@ -26,7 +26,7 @@ class UserAll(forms.ModelForm):
         }
 
 
-class UserCardAll(forms.ModelForm):
+class UserCard(forms.ModelForm):
 
     class Meta:
         model = UserCard
@@ -40,12 +40,3 @@ class UserCardAll(forms.ModelForm):
             'about': forms.Textarea(attrs={'type': 'html'}),
             'birthday': forms.DateInput(attrs={'type': 'date'})
         }
-
-
-class UserForm(forms.Form):
-    """UserForm - Form for the user"""
-    first_name = forms.CharField(max_length=200, widget=forms.TextInput)
-    last_name = forms.CharField(max_length=200, widget=forms.TextInput)
-    about = forms.CharField(widget=forms.Textarea)
-    birthday = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    photo = forms.ImageField()

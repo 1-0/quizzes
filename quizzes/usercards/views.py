@@ -1,10 +1,8 @@
 from django.shortcuts import render, redirect
-from django.forms import formset_factory
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .forms import *
-# from .forms import UserInfo, UserCard, UserForm
+from .forms import UserInfo, UserCard
 from .models import UserCard as UCard
 
 
@@ -21,13 +19,13 @@ def show_user(request, user_name):
         user_data = UCard.objects.get(person_id=user.id)
     except:
         user_data = UCard()
-    forms.append(UserAll(initial={
+    forms.append(UserInfo(initial={
         'first_name': user.first_name,
         'last_name': user.last_name,
         'email': user.email,
         'date_joined': user.date_joined,
     }))
-    forms.append(UserCardAll(initial={
+    forms.append(UserCard(initial={
         'about': user_data.about,
         'birthday': user_data.birthday,
         'photo': user_data.photo,
@@ -42,17 +40,21 @@ def show_user(request, user_name):
     elif request.method == 'POST':
         if user_name == request.user.get_username():
             valid_user = user_name
-            form0 = UserAll(request.POST or None, request.FILES or None, instance=user)
-            form1 = UserCardAll(request.POST or None, request.FILES or None, instance=user_data)
+            new_forms = []
             saved_form = []
-            if form0.is_valid():
-                if form0.save():
-                    saved_form.append(0)
-                    forms[0] = form0
-            if form1.is_valid():
-                if form1.save():
-                    saved_form.append(1)
-                    forms[1] = form1
+            new_forms.append(UserInfo(
+                request.POST or None,
+                request.FILES or None,
+                instance=user))
+            new_forms.append(UserCard(
+                request.POST or None,
+                request.FILES or None,
+                instance=user_data))
+            for i in range(len(new_forms)):
+                if new_forms[i].is_valid():
+                    if new_forms[i].save():
+                        saved_form.append(i)
+                        forms[i] = new_forms[i]
             if saved_form:
                 messages.add_message(request, messages.SUCCESS, 'Data is saved')
             else:

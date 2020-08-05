@@ -36,7 +36,9 @@
             <ul class="right hide-on-med-and-down">
                 {% if user.is_authenticated %}
                 <li>
-                    {{ user.username }}
+                    <a href="{% url 'show_user' user.username %}" class="waves-effect waves-light">
+                        <i class="material-icons left ">account_box</i> Profile {{ user.username }}
+                    </a>
                 </li>
                 <li>
                     <a href="{% url 'account_logout' %}" class="waves-effect waves-light">
@@ -67,7 +69,9 @@
 <ul class="sidenav" id="mobile-nav">
     {% if user.is_authenticated %}
     <li>
-        {{ user.username }}
+        <a href="{% url 'show_user' user.username %}" class="waves-effect waves-light">
+            <i class="material-icons left ">account_box</i> Profile {{ user.username }}
+        </a>
     </li>
     <li>
         <a href="{% url 'account_logout' %}" class="waves-effect waves-light">

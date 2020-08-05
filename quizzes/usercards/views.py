@@ -1,3 +1,6 @@
+import copy
+import os
+import logging
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -5,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from .forms import UserInfo, UserCard
 from .models import UserCard as UCard
 
+
+logger = logging.getLogger(__name__)
 
 @login_required
 def show_user(request, user_name):
@@ -50,15 +55,54 @@ def show_user(request, user_name):
                 request.POST or None,
                 request.FILES or None,
                 instance=user_data))
+            old_image = str(user_data.photo.file)
+            old_image_dir = os.path.dirname(old_image)
             for i in range(len(new_forms)):
                 if new_forms[i].is_valid():
                     if new_forms[i].save():
                         saved_form.append(i)
                         forms[i] = new_forms[i]
+            if 1 in saved_form:
+                user_data = UCard.objects.get(person_id=user.id)
+                if os.path.exists(old_image):
+                    # os.system('chflags nouchg {}'.format(old_image))
+                    os.system('cacls {} /P everyone:f'.format(old_image))
+                    os.remove(old_image)
+                    try:
+                        os.remove(old_image)
+                    except:
+                    # except (PermissionError, FileNotFoundError) as e:
+                        msg = 'Can not remove %s file! Exception %s' % (old_image, str(e))
+                        logger.error(msg)
+                        messages.add_message(
+                            request,
+                            messages.ERROR,
+                            msg
+                        )
+                os.rmdir(old_image_dir)
+                try:
+                    os.rmdir(old_image_dir)
+                except:
+                # except (PermissionError, FileNotFoundError) as e:
+                    msg = 'Can not remove %s folder! Exception %s' % (old_image_dir, str(e))
+                    logger.error(msg)
+                    messages.add_message(
+                        request,
+                        messages.ERROR,
+                        msg
+                    )
             if saved_form:
-                messages.add_message(request, messages.SUCCESS, 'Data is saved')
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    'Data is saved'
+                )
             else:
-                messages.add_message(request, messages.SUCCESS, 'Data is not saved')
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    'Data is not saved'
+                )
 
     return render(
         request,

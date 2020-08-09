@@ -12,6 +12,8 @@ class Quizzes(models.Model):
         blank=True
     )
     content = models.TextField()
+    published = models.BooleanField(default=True)
+    published_datetime = models.DateTimeField(auto_now=True)
 
 
 class Question(models.Model):
@@ -42,4 +44,5 @@ class Comment(models.Model):
     quizzes = models.ForeignKey(Quizzes, on_delete=models.CASCADE)
     person = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     content = models.TextField()
+    published_datetime = models.DateTimeField(auto_now=True)
     allowed = models.BooleanField(default=True)

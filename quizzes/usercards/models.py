@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
+from quizzes.models import Quizzes
 
 
 class UserCard(models.Model):
@@ -13,3 +14,15 @@ class UserCard(models.Model):
     )
     birthday = models.TextField(null=True, blank=True)
     about = models.TextField(null=True, blank=True)
+
+
+class QuizzesProgress(models.Model):
+    """QuizzesProgress - class for user progress in quizzes"""
+    person = models.ForoeignKey(User, on_delete=models.CASCADE)
+    quizzes = models.ForeignKey(Quizzes, on_delete=models.CASCADE)
+    passed_datetime = models.DateTimeField(auto_now=True)
+    correct_answers = models.DecimalField()
+    passed = models.BooleanField()
+
+
+

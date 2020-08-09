@@ -13,7 +13,7 @@ class Quizzes(models.Model):
     )
     content = models.TextField()
     published = models.BooleanField(default=True)
-    published_datetime = models.DateTimeField(auto_now=True)
+    published_datetime = models.DateTimeField(auto_now=True, null=True, blank=True)
 
 
 class Question(models.Model):

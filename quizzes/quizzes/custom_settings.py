@@ -6,7 +6,7 @@ Django custom settings for quizzes project.
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = 'Current secret key'
+SECRET_KEY = 'Current secret key1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

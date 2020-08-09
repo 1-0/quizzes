@@ -12,17 +12,14 @@ class UserCard(models.Model):
         null=True,
         blank=True
     )
-    birthday = models.TextField(null=True, blank=True)
+    birthday = models.DateField(null=True, blank=True)
     about = models.TextField(null=True, blank=True)
 
 
 class QuizzesProgress(models.Model):
     """QuizzesProgress - class for user progress in quizzes"""
-    person = models.ForoeignKey(User, on_delete=models.CASCADE)
+    person = models.ForeignKey(User, on_delete=models.CASCADE)
     quizzes = models.ForeignKey(Quizzes, on_delete=models.CASCADE)
     passed_datetime = models.DateTimeField(auto_now=True)
-    correct_answers = models.DecimalField()
+    correct_answers = models.FloatField()
     passed = models.BooleanField()
-
-
-

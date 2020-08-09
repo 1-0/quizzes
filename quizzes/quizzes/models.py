@@ -29,7 +29,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
     """Answer - class for quizzes questions answers"""
-    question = models.ManyToManyField(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
     image = models.ImageField(
         upload_to=settings.MEDIA_URL+'answers/%d-%m-%YT%H.%M.%S.%f/',
         null=True,

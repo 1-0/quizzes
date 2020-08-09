@@ -2,19 +2,6 @@ from django import forms
 from .models import Quizzes, Question, Answer
 
 
-# class Quizzes(models.Model):
-#     """Quizzes - class for quizzes content"""
-#     person = models.ManyToManyField(User)
-#     image = models.ImageField(
-#         upload_to=settings.MEDIA_URL+'quizzes/%d-%m-%YT%H.%M.%S.%f/',
-#         null=True,
-#         blank=True
-#     )
-#     content = models.TextField()
-#     published = models.BooleanField(default=True)
-#     published_datetime = models.DateTimeField(auto_now=True)
-
-
 class AnswerForm(forms.ModelForm):
 
     class Meta:
@@ -49,8 +36,9 @@ class QuizzesForm(forms.ModelForm):
 
     class Meta:
         model = Quizzes
-        fields = ('content', 'image', 'published', 'published_datetime')
+        fields = ('title', 'content', 'image', 'published', 'published_datetime')
         labels = {
+            'title': 'Quizzes title',
             'content': 'Quizzes content',
             'image': 'Quizzes image',
             'published': 'Quizzes published',

@@ -7,15 +7,20 @@
         Hi {{ user.username }} !!!
     </h1>
     <p>
-        <a href="{% url 'show_user' user.username %}" class="waves-effect waves-light btn">
-            <i class="material-icons left ">account_box</i> User
+        <a href="{% url 'add_quizzes' %}" class="waves-effect waves-light btn">
+            <i class="material-icons left ">add_alarm</i>Add Quizzes
         </a>
     </p>
-    <p>
-        <a href="{% url 'quizzes_model_form' %}" class="waves-effect waves-light btn">
-            <i class="material-icons left ">add_alarm</i> Quizzes
-        </a>
-    </p>
+        {% if quizzes_list %}
+            <h3>Owned quizzes list</h3>
+            {% for quizzes in quizzes_list %}
+                <p>
+                    <a href="{% url 'quizzes' quizzes.id %}" class="waves-effect waves-light">
+                        {{ quizzes.title }}
+                    </a>
+                </p>
+            {% endfor %}
+        {% endif %}
     {% else %}
     <p>
         Please Log In

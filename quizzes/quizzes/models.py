@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class Quizzes(models.Model):
     """Quizzes - class for quizzes content"""
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, unique=True)
     person = models.ManyToManyField(User)
     image = models.ImageField(
         upload_to=settings.MEDIA_URL+'quizzes/%d-%m-%YT%H.%M.%S.%f/',

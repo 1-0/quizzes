@@ -23,7 +23,8 @@ from .views import Home, QuizzesFormView
 
 urlpatterns = [
     path('', Home.as_view(), name='home'),
-    path('quizzes_model_form/', QuizzesFormView.as_view(), name='quizzes_model_form'),
+    path('quizzes/<int:quizzes_id>', QuizzesFormView.as_view(), name='quizzes'),
+    path('add_quizzes/', QuizzesFormView.as_view(), name='add_quizzes'),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('usercards/', include('usercards.urls')),

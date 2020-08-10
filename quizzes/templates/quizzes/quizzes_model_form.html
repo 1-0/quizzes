@@ -1,0 +1,13 @@
+{% include "navbar.html" %}
+
+<h1 class="center-align">Quizzes</h1>
+<div class="center-align">
+    {% if user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Save Quizzes">
+        </form>
+    {% endif %}
+</div>
+{% include "end.html" %}

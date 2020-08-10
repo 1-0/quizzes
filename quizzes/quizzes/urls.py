@@ -19,10 +19,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 
-from .views import Home
+from .views import Home, QuizzesFormView
 
 urlpatterns = [
     path('', Home.as_view(), name='home'),
+    path('quizzes_model_form/', QuizzesFormView.as_view(), name='quizzes_model_form'),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('usercards/', include('usercards.urls')),

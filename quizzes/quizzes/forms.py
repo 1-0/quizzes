@@ -34,17 +34,23 @@ class QuestionForm(forms.ModelForm):
 
 class QuizzesForm(forms.ModelForm):
 
+    published = forms.BooleanField(show_hidden_initial=True, required=False)
+
     class Meta:
         model = Quizzes
-        fields = ('title', 'content', 'image', 'published', 'published_datetime')
+        fields = ('title', 'content', 'image', 'published')
+        # fields = ('title', 'content', 'image', 'published', 'published_datetime')
         labels = {
             'title': 'Quizzes title',
             'content': 'Quizzes content',
             'image': 'Quizzes image',
             'published': 'Quizzes published',
-            'published_datetime': 'Quizzes published datetime',
+            # 'published_datetime': 'Quizzes published datetime',
         }
         widgets = {
             'content': forms.Textarea(attrs={'type': 'html'}),
             'published': forms.BooleanField()
         }
+        # widgets = {
+        #     'published': forms.BooleanField(),
+        # }

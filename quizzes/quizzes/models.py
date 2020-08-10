@@ -16,6 +16,8 @@ class Quizzes(models.Model):
     published = models.BooleanField(default=True)
     published_datetime = models.DateTimeField(auto_now=True, null=True, blank=True)
 
+    readonly_fields = ('published_datetime',)
+
 
 class Question(models.Model):
     """Question - class for quizzes questions"""
@@ -47,3 +49,6 @@ class Comment(models.Model):
     content = models.TextField()
     published_datetime = models.DateTimeField(auto_now=True)
     allowed = models.BooleanField(default=True)
+
+    readonly_fields = ('published_datetime',)
+

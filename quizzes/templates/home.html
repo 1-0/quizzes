@@ -15,8 +15,8 @@
             <h3>Owned quizzes list</h3>
             {% for quizzes in quizzes_list %}
                 <p>
-                    <a href="{% url 'quizzes' quizzes.id %}" class="waves-effect waves-light">
-                        {{ quizzes.title }}
+                    <a href="{% url 'view_quizzes' quizzes.id %}" class="waves-effect waves-light">
+                        <b> {{ quizzes.title }} </b> <i>{{ quizzes.published_datetime }}</i>
                     </a>
                 </p>
             {% endfor %}

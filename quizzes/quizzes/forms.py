@@ -49,8 +49,4 @@ class QuizzesForm(forms.ModelForm):
         }
         widgets = {
             'content': forms.Textarea(attrs={'type': 'html'}),
-            'published': forms.BooleanField()
         }
-        # widgets = {
-        #     'published': forms.BooleanField(),
-        # }

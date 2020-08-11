@@ -17,6 +17,7 @@ class Quizzes(models.Model):
     published_datetime = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     readonly_fields = ('published_datetime',)
+    ordering = ['-published_datetime']
 
 
 class Question(models.Model):

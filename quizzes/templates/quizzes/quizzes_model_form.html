@@ -1,6 +1,12 @@
 {% include "navbar.html" %}
 
 <h1 class="center-align">Quizzes</h1>
+    {% if quizzes.image %}
+    <p>
+    {% load static %}
+        <img src="/static/{{ quizzes.image.url }}" alt="Quizzes '{{ quizzes.title }}' image" width="250" height="250">
+    <p/>
+    {% endif %}
 <div class="center-align">
     {% if user.is_authenticated %}
         <form method="post">

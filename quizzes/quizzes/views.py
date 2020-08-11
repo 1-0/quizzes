@@ -17,7 +17,7 @@ class Home(FormView):
 
     def get(self, request, *args, **kwargs):
 
-        quizzes_list = self.model_class.objects.all().order_by('published_datetime')
+        quizzes_list = self.model_class.objects.all()
         return render(
             request,
             self.template_name,
@@ -74,17 +74,15 @@ class QuizzesView(FormView):
     template_name = r"quizzes/quizzes_model_form.html"
     # success_url = r"/"
 
-    def get(self, request, quizzes_id, *args, **kwargs):
-        try:
-            quizzes = self.model_class.objects.first()
-        except:
-            quizzes = self.model_class()
+    def get(self, request, quizzes_id=None, *args, **kwargs):
+        quizzes = self.model_class.objects.get(pk=quizzes_id)
 
         if request.user:
             form = self.form_class(initial={
                 'title': quizzes.title,
                 'person': quizzes.person,
                 'content': quizzes.content,
+                'image': quizzes.image,
                 'published': quizzes.published,
                 'published_datetime': quizzes.published_datetime,
             })
@@ -93,7 +91,10 @@ class QuizzesView(FormView):
         return render(
             request,
             self.template_name,
-            {'form': form,},
+            {
+                'form': form,
+                'quizzes': quizzes,
+            },
         )
 
     def post(self, request, *args, **kwargs):

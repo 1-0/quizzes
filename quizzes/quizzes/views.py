@@ -24,25 +24,30 @@ class Home(FormView):
             {'quizzes_list': quizzes_list},
         )
 
+
 class QuizzesView(FormView):
+    """QuizzesView - view class for quizzes view page"""
 
     model_class = Quizzes
     form_class = QuizzesForm
     template_name = r"quizzes/quizzes_model_form.html"
     # success_url = r"/"
+    readonly_fields = ('published_datetime',)
 
     def get(self, request, quizzes_id=None, *args, **kwargs):
         if quizzes_id:
             quizzes = self.model_class.objects.get(pk=quizzes_id)
             if request.user:
-                form = self.form_class(initial={
-                    'title': quizzes.title,
-                    'person': quizzes.person,
-                    'content': quizzes.content,
-                    'image': quizzes.image,
-                    'published': quizzes.published,
-                    'published_datetime': quizzes.published_datetime,
-                })
+                form = self.form_class(instance=quizzes
+                    # initial={
+                #     'title': quizzes.title,
+                #     'person': quizzes.person,
+                #     'content': quizzes.content,
+                #     'photo': quizzes.photo,
+                #     'published': quizzes.published,
+                #     'published_datetime': quizzes.published_datetime,
+                # }
+                )
             else:
                 return redirect(r'/')
         else:

@@ -9,10 +9,19 @@
     {% endif %}
 <div class="center-align">
     {% if user.is_authenticated %}
-        <form method="post">
+        {% if quizzes.photo %}
+        <p>
+            {% load static %}
+            <img src="/static/{{ quizzes.photo.url }}" alt="quizzes ''{{ quizzes.title }}'' image" width="250" height="250">
+        <p/>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Save Quizzes">
+            <button class="waves-effect waves-light btn" type="submit">
+                <i class="material-icons left ">save</i> Save
+            </button>
         </form>
     {% endif %}
 </div>

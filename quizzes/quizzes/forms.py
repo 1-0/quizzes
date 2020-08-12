@@ -6,10 +6,10 @@ class AnswerForm(forms.ModelForm):
 
     class Meta:
         model = Answer
-        fields = ('content', 'image', 'correct')
+        fields = ('content', 'photo', 'correct')
         labels = {
             'content': 'Answer content',
-            'image': 'Answer image',
+            'photo': 'Answer image',
             'correct': 'Correct answer',
         }
         widgets = {
@@ -22,10 +22,10 @@ class QuestionForm(forms.ModelForm):
 
     class Meta:
         model = Question
-        fields = ('content', 'image')
+        fields = ('content', 'photo')
         labels = {
             'content': 'Question content',
-            'image': 'Question image',
+            'photo': 'Question image',
         }
         widgets = {
             'content': forms.Textarea(attrs={'type': 'html'}),
@@ -34,16 +34,18 @@ class QuestionForm(forms.ModelForm):
 
 class QuizzesForm(forms.ModelForm):
 
+    ordering = ['-published_datetime',]
     published = forms.BooleanField(show_hidden_initial=True, required=False)
+    readonly_fields = ('published_datetime',)
 
     class Meta:
         model = Quizzes
-        fields = ('title', 'content', 'image', 'published')
+        fields = ('title', 'content', 'photo', 'published')
         # fields = ('title', 'content', 'image', 'published', 'published_datetime')
         labels = {
             'title': 'Quizzes title',
             'content': 'Quizzes content',
-            'image': 'Quizzes image',
+            'photo': 'Quizzes image',
             'published': 'Quizzes published',
             # 'published_datetime': 'Quizzes published datetime',
         }

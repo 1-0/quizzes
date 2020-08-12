@@ -7,7 +7,7 @@ class Quizzes(models.Model):
     """Quizzes - class for quizzes content"""
     title = models.CharField(max_length=255, unique=True)
     person = models.ManyToManyField(User)
-    image = models.ImageField(
+    photo = models.ImageField(
         upload_to=settings.MEDIA_URL+'quizzes/%d-%m-%YT%H.%M.%S.%f/',
         null=True,
         blank=True
@@ -23,7 +23,7 @@ class Quizzes(models.Model):
 class Question(models.Model):
     """Question - class for quizzes questions"""
     quizzes = models.ForeignKey(Quizzes, on_delete=models.CASCADE)
-    image = models.ImageField(
+    photo = models.ImageField(
         upload_to=settings.MEDIA_URL+'questions/%d-%m-%YT%H.%M.%S.%f/',
         null=True,
         blank=True
@@ -34,7 +34,7 @@ class Question(models.Model):
 class Answer(models.Model):
     """Answer - class for quizzes questions answers"""
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    image = models.ImageField(
+    photo = models.ImageField(
         upload_to=settings.MEDIA_URL+'answers/%d-%m-%YT%H.%M.%S.%f/',
         null=True,
         blank=True

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import django.core
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -264,3 +265,18 @@ try:
     from .custom_settings import *
 except ModuleNotFoundError:
     pass
+
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+    EMAIL_FILE_PATH = 'tmp/email-messages/'
+
+    # python -m smtpd -n -c DebuggingServer localhost:1025
+    #
+    # EMAIL_HOST = 'localhost'
+    # EMAIL_PORT = 1025
+
+    # python -m pip install -U aiosmtpd
+    # python3 -m aiosmtpd -n
+    #
+    # EMAIL_HOST = 'localhost'
+    # EMAIL_PORT = 8025

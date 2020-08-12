@@ -47,6 +47,9 @@ def show_user(request, user_name):
             valid_user = user_name
             new_forms = []
             saved_form = []
+            # if len(request.FILES) > 0:
+            #     request.FILES.photo.name = '_'.join([user_name, request.FILES.photo.name])
+
             new_forms.append(UserInfo(
                 request.POST or None,
                 request.FILES or None,

@@ -70,19 +70,21 @@ class QuizzesView(FormView):
             quizzes = self.model_class.objects.get(pk=quizzes_id)
         else:
             quizzes = self.model_class()
-        # quizzes = self.model_class.objects.get(pk=quizzes_id)
         form = self.form_class(
             request.POST or None,
             request.FILES or None,
             instance=quizzes
         )
         if form.is_valid():
+            if len(request.FILES) > 0:
+                request.FILES['photo'].photo.name = '_'.join([quizzes.id, request.FILES['photo'].photo.name])
             if form.save():
                 messages.add_message(
                     request,
                     messages.SUCCESS,
                     'Quizzes Data is saved'
                 )
+
             else:
                 messages.add_message(
                     request,

@@ -2,13 +2,15 @@ from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from quizzes.models import Quizzes
+from django.core.files.storage import FileSystemStorage
 
 
 class UserCard(models.Model):
     """UserCard - class for user card content"""
     person = models.OneToOneField(User, on_delete=models.CASCADE)
     photo = models.ImageField(
-        upload_to=settings.MEDIA_URL+'users/%d-%m-%YT%H.%M.%S.%f/',
+        # upload_to=settings.MEDIA_URL+'users/',
+        storage=FileSystemStorage(location='static/media/users/'),
         null=True,
         blank=True
     )

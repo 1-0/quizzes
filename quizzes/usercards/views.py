@@ -47,8 +47,12 @@ def show_user(request, user_name):
             valid_user = user_name
             new_forms = []
             saved_form = []
-            # if len(request.FILES) > 0:
-            #     request.FILES.photo.name = '_'.join([user_name, request.FILES.photo.name])
+            old_name = ""
+            old_name += user_data.photo.name
+            if len(request.FILES) > 0:
+                photo_user = request.FILES.get('photo', None)
+                photo_user.name = '.'.join([user_name, photo_user.name.split('.')[-1]])
+                # photo_user.name = user_name + "_" + photo_user.name
 
             new_forms.append(UserInfo(
                 request.POST or None,
@@ -58,48 +62,18 @@ def show_user(request, user_name):
                 request.POST or None,
                 request.FILES or None,
                 instance=user_data))
-            old_image = str(user_data.photo.file)
-            old_image_dir = os.path.dirname(old_image)
             for i in range(len(new_forms)):
                 if new_forms[i].is_valid():
                     if new_forms[i].save():
                         saved_form.append(i)
                         forms[i] = new_forms[i]
-            # if 1 in saved_form:
-            #     user_data = UCard.objects.get(person_id=user.id)
-            #     if os.path.exists(old_image):
-            #         try:
-            #             os.system('chflags nouchg {}'.format(old_image))
-            #             os.system('cacls {} /P everyone:f'.format(old_image))
-            #             os.remove(old_image)
-            #             os.rmdir(old_image_dir)
-            #         # except:
-            #         except (PermissionError, FileNotFoundError) as e:
-            #         #     msg = 'Can not remove %s file! Exception %s' % (old_image, str(e))
-            #             msg = 'Can not remove %s file! Exception' % old_image
-            #             logger.error(msg)
-            #             messages.add_message(
-            #                 request,
-            #                 messages.ERROR,
-            #                 msg
-            #             )
-            #     try:
-            #         os.rmdir(old_image_dir)
-            #     # except:
-            #     except (PermissionError, FileNotFoundError) as e:
-            #         msg = 'Can not remove %s folder! Exception %s' % (old_image_dir, str(e))
-            #         logger.error(msg)
-            #         messages.add_message(
-            #             request,
-            #             messages.ERROR,
-            #             msg
-            #         )
             if saved_form:
                 messages.add_message(
                     request,
                     messages.SUCCESS,
                     'Data is saved'
                 )
+                user_data.photo.storage.delete(old_name)
             else:
                 messages.add_message(
                     request,

@@ -7,7 +7,7 @@
     {% if user_data.photo %}
     <p>
     {% load static %}
-        <img src="/static/{{ user_data.photo.url }}" alt="User {{ user_name }} image" width="250" height="250">
+        <img src="/static/media/users/{{ user_data.photo.name }}" alt="User {{ user_name }} image">
     <p/>
     {% endif %}
 

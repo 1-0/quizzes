@@ -3,28 +3,40 @@
 <h1 class="center-align">Quizzess Django</h1>
 <div class="center-align">
     {% if user.is_authenticated %}
-{#    <h1>#}
-{#        Hi {{ user.username }} !!!#}
-{#    </h1>#}
-{#    <p>#}
-{#        <a href="{% url 'add_quizzes' %}" class="waves-effect waves-light btn">#}
-{#            <i class="material-icons left ">add_alarm</i>Add Quizzes#}
-{#        </a>#}
-{#    </p>#}
-        {% if quizzes_list %}
-            <h3>Owned quizzes list</h3>
-            {% for quizzes in quizzes_list %}
-                <p>
-                    <a href="{% url 'view_quizzes' quizzes.id %}" class="waves-effect waves-light">
-                        <b> {{ quizzes.title }} </b> (<i>{{ quizzes.publ_d_time }} UTC</i>)
-                    </a>
-                </p>
-            {% endfor %}
-        {% endif %}
+    <h2>
+        Start page for {{ user.username }} user
+    </h2>
     {% else %}
     <p>
-        Please Log In
+        Please Log In For Manipulating Quizzes
     </p>
+    {% endif %}
+    {% if quizzes_list %}
+        <h3>Quizzes List</h3>
+        {% for quizzes in quizzes_list %}
+            <p>
+                <a href="{% url 'view_quizzes' quizzes.id %}" class="waves-effect waves-light">
+                    <b> {{ quizzes.title }} </b> (<i>{{ quizzes.publ_d_time }} UTC</i>)
+                </a>
+            </p>
+        {% endfor %}
+    {% endif %}
+    {% if quizzes_list.paginator.num_pages > 1 %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if quizzes_list.has_previous %}
+                    <a class="btn" href="?page=1">&laquo; first</a>
+                    <a class="btn" href="?page={{ quizzes_list.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current">
+                    Page {{ quizzes_list.number }} of {{ quizzes_list.paginator.num_pages }}.
+                </span>
+                {% if quizzes_list.has_next %}
+                    <a class="btn" href="?page={{ quizzes_list.next_page_number }}">next</a>
+                    <a class="btn" href="?page={{ quizzes_list.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
     {% endif %}
 </div>
 {% include "end.html" %}

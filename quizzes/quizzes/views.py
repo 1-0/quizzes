@@ -1,8 +1,8 @@
 from django.views.generic import TemplateView
-
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView
 from django.http import HttpResponse
@@ -16,8 +16,10 @@ class Home(FormView):
     template_name = 'home.html'
 
     def get(self, request, *args, **kwargs):
-
-        quizzes_list = self.model_class.objects.all()
+        quizzes_all = self.model_class.objects.all()
+        paginator = Paginator(quizzes_all, 10)
+        page_number = request.GET.get('page')
+        quizzes_list = paginator.get_page(page_number)
         return render(
             request,
             self.template_name,

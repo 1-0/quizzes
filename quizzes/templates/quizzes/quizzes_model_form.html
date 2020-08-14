@@ -2,27 +2,33 @@
 
 <h1 class="center-align">Quizzes</h1>
 <div class="center-align">
-    {% if user.is_authenticated %}
-        {% if quizzes.photo %}
-            <p>
-                <img src="/static/media/quizzes/{{ quizzes.photo.name }}" alt="quizzes ''{{ quizzes.title }}'' image">
-{#                <img src="{% static quizzes.photo.url %}" alt="quizzes ''{{ quizzes.title }}'' image" width="250" height="250">#}
-            <p/>
-        {% endif %}
-
+    {% if quizzes.photo %}
+        <p>
+            <img src="/static/media/quizzes/{{ quizzes.photo.name }}" alt="quizzes ''{{ quizzes.title }}'' image">
+{#            <img src="{% static quizzes.photo.url %}" alt="quizzes ''{{ quizzes.title }}'' image" width="250" height="250">#}
+        <p/>
+    {% endif %}
+    {% if quizzes.publ_d_time %}
+        <p>Published at:
+            {{ quizzes.publ_d_time.day }}-{{ quizzes.publ_d_time.month }}-{{ quizzes.publ_d_time.year }}
+            {{ quizzes.publ_d_time.hour }}:{{ quizzes.publ_d_time.minute }}:{{ quizzes.publ_d_time.second }}
+            UTC</p>
+    {% endif %}
+    {% if user.is_authenticated and not quizzes_id or user.is_authenticated and user.id == quizzes.q_person.id %}
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            {% if quizzes.publ_d_time %}
-                <p>Published at:
-                    {{ quizzes.publ_d_time.day }}-{{ quizzes.publ_d_time.month }}-{{ quizzes.publ_d_time.year }}
-                    {{ quizzes.publ_d_time.hour }}:{{ quizzes.publ_d_time.minute }}:{{ quizzes.publ_d_time.second }}
-                    UTC</p>
-            {% endif %}
             <button class="waves-effect waves-light btn" type="submit">
                 <i class="material-icons left ">save</i> Save
             </button>
         </form>
+    {% else %}
+        <h5>
+            {{ quizzes.title }} by {{ quizzes.q_person.username }}
+        </h5>
+        <p>
+            {{ quizzes.content }}
+        </p>
     {% endif %}
 </div>
 {% include "end.html" %}

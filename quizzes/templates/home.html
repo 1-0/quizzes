@@ -1,6 +1,6 @@
 {% include "navbar.html" %}
 
-<h1 class="center-align">Quizzess Django</h1>
+<h1 class="center-align">Quizzes Django</h1>
 <div class="center-align">
     {% if user.is_authenticated %}
     <h2>
@@ -16,7 +16,7 @@
         {% for quizzes in quizzes_list %}
             <p>
                 <a href="{% url 'view_quizzes' quizzes.id %}" class="waves-effect waves-light">
-                    <b> {{ quizzes.title }} </b> (<i>{{ quizzes.publ_d_time }} UTC</i>)
+                    <b> {{ quizzes.title }} </b>  by {{ quizzes.q_person.username }} (<i>{{ quizzes.publ_d_time }} UTC</i>)
                 </a>
             </p>
         {% endfor %}

@@ -9,7 +9,7 @@ FS = FileSystemStorage(location=settings.MEDIA_ROOT+'quizzes/')
 class Quizzes(models.Model):
     """Quizzes - class for quizzes content"""
     title = models.CharField(max_length=255, unique=True)
-    q_person = models.ManyToManyField(User)
+    q_person = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     photo = models.ImageField(
         storage=FS,
         null=True,

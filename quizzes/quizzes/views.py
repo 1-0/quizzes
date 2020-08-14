@@ -36,6 +36,8 @@ class QuizzesView(FormView):
     readonly_fields = ('published_datetime',)
 
     def get(self, request, quizzes_id=None, *args, **kwargs):
+        if not quizzes_id and not request.user.id:
+            return redirect(r'/')
         if quizzes_id:
             quizzes = self.model_class.objects.get(pk=quizzes_id)
             if request.user:
@@ -48,13 +50,13 @@ class QuizzesView(FormView):
                 form = self.form_class()
             else:
                 return redirect(r'/')
-        # old_file = "" + quizzes.photo.name
         return render(
             request,
             self.template_name,
             {
                 'form': form,
                 'quizzes': quizzes,
+                'quizzes_id': quizzes_id,
             },
         )
 
@@ -82,7 +84,7 @@ class QuizzesView(FormView):
                     messages.SUCCESS,
                     'Quizzes Data is saved'
                 )
-                if photo_quizzes and old_file:
+                if len(request.FILES) > 0 and photo_quizzes and old_file:
                     FS.delete(old_file)
             else:
                 messages.add_message(
@@ -96,5 +98,6 @@ class QuizzesView(FormView):
             {
                 'form': form,
                 'quizzes': quizzes,
+                'quizzes_id': quizzes_id,
             },
         )

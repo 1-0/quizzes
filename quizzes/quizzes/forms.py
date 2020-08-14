@@ -33,11 +33,12 @@ class QuestionForm(forms.ModelForm):
 
 
 class QuizzesForm(forms.ModelForm):
-    q_person = forms.UUIDField(
-        required=False,
-        label='Person',
-        widget=forms.HiddenInput(attrs={'hidden': 'true'}),
-    )
+    # q_person = forms.UUIDField(
+    #     required=False,
+    #     label='Person',
+    #     widget=forms.HiddenInput(attrs={'hidden': 'true'}),
+    #     initial=False,
+    # )
     is_publ = forms.BooleanField(
         required=False,
         label='Published',
@@ -54,7 +55,8 @@ class QuizzesForm(forms.ModelForm):
             'content',
             'photo',
             'is_publ',
-            'q_person')
+            # 'q_person',
+        )
         labels = {
             'title': 'Quizzes title',
             'content': 'Quizzes content',
@@ -64,5 +66,5 @@ class QuizzesForm(forms.ModelForm):
         }
         widgets = {
             'content': forms.Textarea(attrs={'type': 'html'}),
-            'q_person': forms.HiddenInput(),
+            # 'q_person': forms.HiddenInput(),
         }

@@ -13,6 +13,12 @@
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
+            {% if quizzes.publ_d_time %}
+                <p>Published at:
+                    {{ quizzes.publ_d_time.day }}-{{ quizzes.publ_d_time.month }}-{{ quizzes.publ_d_time.year }}
+                    {{ quizzes.publ_d_time.hour }}:{{ quizzes.publ_d_time.minute }}:{{ quizzes.publ_d_time.second }}
+                    UTC</p>
+            {% endif %}
             <button class="waves-effect waves-light btn" type="submit">
                 <i class="material-icons left ">save</i> Save
             </button>

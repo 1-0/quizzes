@@ -46,6 +46,7 @@ class QuizzesView(FormView):
                 form = self.form_class()
             else:
                 return redirect(r'/')
+        # old_file = "" + quizzes.photo.name
         return render(
             request,
             self.template_name,
@@ -65,25 +66,21 @@ class QuizzesView(FormView):
             request.FILES or None,
             instance=quizzes
         )
-        old_file = "" + quizzes.photo.name
+        if quizzes.photo.name:
+            old_file = "" + quizzes.photo.name
+        else:
+            old_file = None
         if form.is_valid():
             if len(request.FILES) > 0:
-                # old_file = "" + quizzes.photo.name
                 photo_quizzes = request.FILES.get('photo', None)
                 photo_quizzes.name = '.'.join([request.user.username, photo_quizzes.name.split('.')[-1]])
-            # request.FILES['photo'].photo.name = '_'.join([quizzes.id, request.FILES['photo'].photo.name])
             if form.save():
                 messages.add_message(
                     request,
                     messages.SUCCESS,
                     'Quizzes Data is saved'
                 )
-                # try:
-                #     FS.delete(old_file)
-                # except:
-                #     pass
-                # print(FS.url(quizzes.photo.name))
-                if photo_quizzes:
+                if photo_quizzes and old_file:
                     FS.delete(old_file)
             else:
                 messages.add_message(

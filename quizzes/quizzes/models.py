@@ -9,18 +9,18 @@ FS = FileSystemStorage(location=settings.MEDIA_ROOT+'quizzes/')
 class Quizzes(models.Model):
     """Quizzes - class for quizzes content"""
     title = models.CharField(max_length=255, unique=True)
-    person = models.ManyToManyField(User)
+    q_person = models.ManyToManyField(User)
     photo = models.ImageField(
         storage=FS,
         null=True,
         blank=True
     )
     content = models.TextField()
-    published = models.BooleanField(default=True)
-    published_datetime = models.DateTimeField(auto_now=True, null=True, blank=True)
+    is_publ = models.BooleanField(default=False)
+    publ_d_time = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     readonly_fields = ('published_datetime',)
-    ordering = ['-published_datetime',]
+    ordering = ['-publ_d_time', 'title']
 
 
 class Question(models.Model):

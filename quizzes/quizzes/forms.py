@@ -33,22 +33,36 @@ class QuestionForm(forms.ModelForm):
 
 
 class QuizzesForm(forms.ModelForm):
-
-    ordering = ['-published_datetime',]
-    published = forms.BooleanField(show_hidden_initial=True, required=False)
-    readonly_fields = ('published_datetime',)
+    q_person = forms.UUIDField(
+        required=False,
+        label='Person',
+        widget=forms.HiddenInput(attrs={'hidden': 'true'}),
+    )
+    is_publ = forms.BooleanField(
+        required=False,
+        label='Published',
+        widget=forms.CheckboxInput(attrs={'class': 'filled-in'}),
+        initial=False,
+    )
+    ordering = ['-publ_d_time', 'title']
+    readonly_fields = ('q_person', 'person', 'publ_d_time')
 
     class Meta:
         model = Quizzes
-        fields = ('title', 'content', 'photo', 'published')
-        # fields = ('title', 'content', 'image', 'published', 'published_datetime')
+        fields = (
+            'title',
+            'content',
+            'photo',
+            'is_publ',
+            'q_person')
         labels = {
             'title': 'Quizzes title',
             'content': 'Quizzes content',
             'photo': 'Quizzes image',
-            'published': 'Quizzes published',
-            # 'published_datetime': 'Quizzes published datetime',
+            'is_publ': 'Quizzes published',
+            'publ_d_time': 'Quizzes published datetime',
         }
         widgets = {
             'content': forms.Textarea(attrs={'type': 'html'}),
+            'q_person': forms.HiddenInput(),
         }

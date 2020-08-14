@@ -1,6 +1,9 @@
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.files.storage import FileSystemStorage
+
+FS = FileSystemStorage(location=settings.MEDIA_ROOT+'quizzes/')
 
 
 class Quizzes(models.Model):
@@ -8,7 +11,7 @@ class Quizzes(models.Model):
     title = models.CharField(max_length=255, unique=True)
     person = models.ManyToManyField(User)
     photo = models.ImageField(
-        upload_to=settings.MEDIA_URL+'quizzes/%d-%m-%YT%H.%M.%S.%f/',
+        storage=FS,
         null=True,
         blank=True
     )
@@ -24,7 +27,8 @@ class Question(models.Model):
     """Question - class for quizzes questions"""
     quizzes = models.ForeignKey(Quizzes, on_delete=models.CASCADE)
     photo = models.ImageField(
-        upload_to=settings.MEDIA_URL+'questions/%d-%m-%YT%H.%M.%S.%f/',
+        # upload_to=settings.MEDIA_URL+'questions/%d-%m-%YT%H.%M.%S.%f/',
+        storage=FS,
         null=True,
         blank=True
     )
@@ -35,7 +39,7 @@ class Answer(models.Model):
     """Answer - class for quizzes questions answers"""
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     photo = models.ImageField(
-        upload_to=settings.MEDIA_URL+'answers/%d-%m-%YT%H.%M.%S.%f/',
+        storage=FS,
         null=True,
         blank=True
     )

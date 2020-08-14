@@ -270,6 +270,8 @@ if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
     EMAIL_FILE_PATH = 'tmp/email-messages/'
 
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media/')
+
     # python -m smtpd -n -c DebuggingServer localhost:1025
     #
     # EMAIL_HOST = 'localhost'

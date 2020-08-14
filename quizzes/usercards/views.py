@@ -1,11 +1,10 @@
-import copy
-import os
 import logging
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .forms import UserInfo, UserCard
+from .models import FS
 from .models import UserCard as UCard
 
 
@@ -24,17 +23,8 @@ def show_user(request, user_name):
         user_data = UCard.objects.get(person_id=user.id)
     except:
         user_data = UCard()
-    forms.append(UserInfo(initial={
-        'first_name': user.first_name,
-        'last_name': user.last_name,
-        'email': user.email,
-        'date_joined': user.date_joined,
-    }))
-    forms.append(UserCard(initial={
-        'about': user_data.about,
-        'birthday': user_data.birthday,
-        'photo': user_data.photo,
-    }))
+    forms.append(UserInfo(instance=user))
+    forms.append(UserCard(instance=user_data))
     if request.method == 'GET':
         if user_name == request.user.get_username():
             valid_user = user_name
@@ -47,12 +37,10 @@ def show_user(request, user_name):
             valid_user = user_name
             new_forms = []
             saved_form = []
-            old_name = ""
-            old_name += user_data.photo.name
+            old_file = "" + user_data.photo.name
             if len(request.FILES) > 0:
                 photo_user = request.FILES.get('photo', None)
                 photo_user.name = '.'.join([user_name, photo_user.name.split('.')[-1]])
-                # photo_user.name = user_name + "_" + photo_user.name
 
             new_forms.append(UserInfo(
                 request.POST or None,
@@ -73,7 +61,8 @@ def show_user(request, user_name):
                     messages.SUCCESS,
                     'Data is saved'
                 )
-                user_data.photo.storage.delete(old_name)
+                if photo_user:
+                    FS.delete(old_file)
             else:
                 messages.add_message(
                     request,

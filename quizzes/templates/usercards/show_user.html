@@ -5,10 +5,11 @@
         User card all for {{ user_name }}
     </h1>
     {% if user_data.photo %}
-    <p>
-    {% load static %}
-        <img src="/static/media/users/{{ user_data.photo.name }}" alt="User {{ user_name }} image">
-    <p/>
+        <p>
+        {% load static %}
+            <img src="/static/media/users/{{ user_data.photo.name }}" alt="User {{ user_name }} image">
+{#            <img src="{% static user_data.photo.url %}" alt="User {{ user_name }} image">#}
+        <p/>
     {% endif %}
 
     {% if valid_user %}

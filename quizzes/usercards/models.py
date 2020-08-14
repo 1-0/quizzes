@@ -4,13 +4,14 @@ from django.contrib.auth.models import User
 from quizzes.models import Quizzes
 from django.core.files.storage import FileSystemStorage
 
+FS = FileSystemStorage(location=settings.MEDIA_ROOT+'users/')
+
 
 class UserCard(models.Model):
     """UserCard - class for user card content"""
     person = models.OneToOneField(User, on_delete=models.CASCADE)
     photo = models.ImageField(
-        # upload_to=settings.MEDIA_URL+'users/',
-        storage=FileSystemStorage(location='static/media/users/'),
+        storage=FS,
         null=True,
         blank=True
     )

@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView
 from django.http import HttpResponse
-from .models import Quizzes
+from .models import Quizzes, FS
 from .forms import QuizzesForm
 
 
@@ -31,23 +31,13 @@ class QuizzesView(FormView):
     model_class = Quizzes
     form_class = QuizzesForm
     template_name = r"quizzes/quizzes_model_form.html"
-    # success_url = r"/"
     readonly_fields = ('published_datetime',)
 
     def get(self, request, quizzes_id=None, *args, **kwargs):
         if quizzes_id:
             quizzes = self.model_class.objects.get(pk=quizzes_id)
             if request.user:
-                form = self.form_class(instance=quizzes
-                    # initial={
-                #     'title': quizzes.title,
-                #     'person': quizzes.person,
-                #     'content': quizzes.content,
-                #     'photo': quizzes.photo,
-                #     'published': quizzes.published,
-                #     'published_datetime': quizzes.published_datetime,
-                # }
-                )
+                form = self.form_class(instance=quizzes)
             else:
                 return redirect(r'/')
         else:
@@ -75,16 +65,26 @@ class QuizzesView(FormView):
             request.FILES or None,
             instance=quizzes
         )
+        old_file = "" + quizzes.photo.name
         if form.is_valid():
             if len(request.FILES) > 0:
-                request.FILES['photo'].photo.name = '_'.join([quizzes.id, request.FILES['photo'].photo.name])
+                # old_file = "" + quizzes.photo.name
+                photo_quizzes = request.FILES.get('photo', None)
+                photo_quizzes.name = '.'.join([request.user.username, photo_quizzes.name.split('.')[-1]])
+            # request.FILES['photo'].photo.name = '_'.join([quizzes.id, request.FILES['photo'].photo.name])
             if form.save():
                 messages.add_message(
                     request,
                     messages.SUCCESS,
                     'Quizzes Data is saved'
                 )
-
+                # try:
+                #     FS.delete(old_file)
+                # except:
+                #     pass
+                # print(FS.url(quizzes.photo.name))
+                if photo_quizzes:
+                    FS.delete(old_file)
             else:
                 messages.add_message(
                     request,

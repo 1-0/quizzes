@@ -6,8 +6,8 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView
 from django.http import HttpResponse
-from .models import Quizzes, FS
-from .forms import QuizzesForm
+from .models import Quizzes, Question, FS
+from .forms import QuizzesForm, QuestionForm
 
 
 class Home(FormView):
@@ -101,3 +101,82 @@ class QuizzesView(FormView):
                 'quizzes_id': quizzes_id,
             },
         )
+
+
+class QuestionView(FormView):
+    """QuestionView - view class for question view page"""
+
+    model_class = Question
+    form_class = QuestionForm
+    template_name = r"quizzes/question_model_form.html"
+
+    def get(self, request, quizzes_id=None, question_id=None, *args, **kwargs):
+        if not question_id and not quizzes_id:
+            return redirect(r'/')
+        if quizzes_id and question_id:
+            question = self.model_class.objects.get(pk=question_id)
+            if request.user:
+                form = self.form_class(instance=question)
+            else:
+                return redirect(r'/')
+        else:
+            quizzes = self.model_class()
+            if request.user:
+                form = self.form_class()
+            else:
+                return redirect(r'/')
+        return render(
+            request,
+            self.template_name,
+            {
+                'form': form,
+                'quizzes': quizzes,
+                'quizzes_id': quizzes_id,
+                'question_id': question_id,
+            },
+        )
+
+    def post(self, request, quizzes_id=None, question_id=None, *args, **kwargs):
+        if question_id:
+            question = self.model_class.objects.get(pk=question_id)
+        else:
+            question = self.model_class()
+        form = self.form_class(
+            request.POST or None,
+            request.FILES or None,
+            instance=question
+        )
+        if question.photo.name:
+            old_file = "" + question.photo.name
+        else:
+            old_file = None
+        if form.is_valid():
+            if len(request.FILES) > 0:
+                photo_question = request.FILES.get('photo', None)
+                photo_question.name = '.'.join([request.user.username, photo_question.name.split('.')[-1]])
+            if form.save():
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    'Question Data is saved'
+                )
+                if len(request.FILES) > 0 and photo_question and old_file:
+                    FS.delete(old_file)
+            else:
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    'Question Data is not saved'
+                )
+        return render(
+            request,
+            self.template_name,
+            {
+                'form': form,
+                'question': question,
+                'quizzes_id': quizzes_id,
+                'question_id': question_id,
+            },
+        )
+
+

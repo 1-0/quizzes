@@ -33,19 +33,14 @@ class QuestionForm(forms.ModelForm):
 
 
 class QuizzesForm(forms.ModelForm):
-    # q_person = forms.UUIDField(
-    #     required=False,
-    #     label='Person',
-    #     widget=forms.HiddenInput(attrs={'hidden': 'true'}),
-    #     initial=False,
-    # )
     is_publ = forms.BooleanField(
         required=False,
         label='Published',
         widget=forms.CheckboxInput(attrs={'class': 'filled-in'}),
         initial=False,
     )
-    ordering = ['-publ_d_time', 'title']
+    # ordering = ['-publ_d_time', 'title']
+    ordering = ['-id']
     readonly_fields = ('q_person', 'person', 'publ_d_time')
 
     class Meta:

@@ -22,6 +22,10 @@
                 <i class="material-icons left ">save</i> Save
             </button>
         </form>
+        {% if quizzes_id and user.is_authenticated and user.id == quizzes.q_person.id %}
+            {% load static %}
+            <a class="waves-effect waves-light btn" href="{% url 'add_question' quizzes_id  %}"><i class="material-icons left ">Add question</i></a>
+        {% endif %}
     {% else %}
         <h5>
             {{ quizzes.title }} by {{ quizzes.q_person.username }}

@@ -19,15 +19,24 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 
-from .views import Home, QuizzesView
+from .views import Home, QuizzesView, QuestionView
 
 urlpatterns = [
     path('', Home.as_view(), name='home'),
     path('quizzes/', QuizzesView.as_view(), name='add_quizzes'),
     path('quizzes/<int:quizzes_id>', QuizzesView.as_view(), name='view_quizzes'),
+    path('quizzes/<int:quizzes_id>/question/', QuestionView.as_view(), name='add_question'),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('usercards/', include('usercards.urls')),
 ]
+
 if settings.DEBUG:
-     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    import debug_toolbar
+    urlpatterns = [
+                      path('__debug__/',
+                           include(debug_toolbar.urls)
+                           ),
+        ] + urlpatterns

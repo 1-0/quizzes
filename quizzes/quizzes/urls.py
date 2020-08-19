@@ -35,13 +35,10 @@ urlpatterns = [
     path('usercards/', include('usercards.urls')),
 ]
 
-# urlpatterns += [
-#     path("graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))),
-# ]
-from graphene_django.views import GraphQLView
-
 urlpatterns += [
-    path("graphql", csrf_exempt(GraphQLView.as_view(graphiql=True))),
+    # path("graphql/", GraphQLView.as_view(graphiql=True, schema=schema)),
+    path("graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))),
+
 ]
 
 

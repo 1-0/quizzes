@@ -39,40 +39,47 @@ class Query(graphene.ObjectType):
     comments_by_quizzes = graphene.List(CommentType, quizzes=graphene.Int(required=True))
     comments_by_person = graphene.List(CommentType, person=graphene.Int(required=True))
 
-    def resolve_all_quizzes(root, info):
+    @staticmethod
+    def resolve_all_quizzes(self, info):
         return Quizzes.objects.all()
 
-    def resolve_quizzes_by_title(root, info, title):
+    @staticmethod
+    def resolve_quizzes_by_title(self, info, title):
         try:
             return Quizzes.objects.get(title=title)
         except Quizzes.DoesNotExist:
             return None
 
-    def resolve_quizzes_by_person(root, info, q_person):
+    @staticmethod
+    def resolve_quizzes_by_person(self, info, q_person):
         try:
             return Quizzes.objects.get(q_person=q_person)
         except Quizzes.DoesNotExist:
             return None
 
-    def resolve_questions_by_quizzes(root, info, quizzes):
+    @staticmethod
+    def resolve_questions_by_quizzes(self, info, quizzes):
         try:
             return Question.objects.get(quizzes=quizzes)
         except Question.DoesNotExist:
             return None
 
-    def resolve_answers_by_question(root, info, question):
+    @staticmethod
+    def resolve_answers_by_question(self, info, question):
         try:
             return Answer.objects.get(question=question)
         except Answer.DoesNotExist:
             return None
 
-    def resolve_comments_by_quizzes(root, info, quizzes):
+    @staticmethod
+    def resolve_comments_by_quizzes(self, info, quizzes):
         try:
             return Comment.objects.get(quizzes=quizzes)
         except Comment.DoesNotExist:
             return None
 
-    def resolve_comments_by_person(root, info, person):
+    @staticmethod
+    def resolve_comments_by_person(self, info, person):
         try:
             return Comment.objects.get(person=person)
         except Comment.DoesNotExist:

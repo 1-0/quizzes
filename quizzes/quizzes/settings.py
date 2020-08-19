@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'quizzes',
     'usercards',
 
+    'graphene_django',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -216,6 +218,11 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+GRAPHENE = {
+    # "SCHEMA": "quizzes.schema.schema",
+    "SCHEMA": "quizzes.schema",
+}
 
 
 # Static files (CSS, JavaScript, Images)

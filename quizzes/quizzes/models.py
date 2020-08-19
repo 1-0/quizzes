@@ -22,6 +22,12 @@ class Quizzes(models.Model):
     readonly_fields = ('published_datetime',)
     ordering = ['-publ_d_time', 'title']
 
+    def __repr__(self):
+        return "<Quizzes #%s from user #%s>" % (self.id, self.q_person_id)
+
+    def __str__(self):
+        return "<Quizzes #%s from user #%s>" % (self.id, self.q_person_id)
+
 
 class Question(models.Model):
     """Question - class for quizzes questions"""
@@ -33,6 +39,12 @@ class Question(models.Model):
         blank=True
     )
     content = models.TextField()
+
+    def __repr__(self):
+        return "<Question #%s for quizzes #%s>" % (self.id, self.quizzes_id)
+
+    def __str__(self):
+        return "<Question #%s for quizzes #%s>" % (self.id, self.quizzes_id)
 
 
 class Answer(models.Model):
@@ -46,6 +58,12 @@ class Answer(models.Model):
     content = models.TextField()
     correct = models.BooleanField()
 
+    def __repr__(self):
+        return "<Answer #%s for question #%s>" % (self.id, self.question_id)
+
+    def __str__(self):
+        return "<Answer #%s for question #%s>" % (self.id, self.question_id)
+
 
 class Comment(models.Model):
     """Comment - class for quizzes Comments"""
@@ -56,4 +74,10 @@ class Comment(models.Model):
     allowed = models.BooleanField(default=True)
 
     readonly_fields = ('published_datetime',)
+
+    def __repr__(self):
+        return "<Comment #%s from user #%s>" % (self.id, self.person_id)
+
+    def __str__(self):
+        return "<Comment #%s from user #%s>" % (self.id, self.person_id)
 

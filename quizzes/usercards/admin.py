@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import User, UserCard, QuizzesProgress
 
-# Register your models here.
+admin.site.register(User)
+admin.site.register(UserCard)
+admin.site.register(QuizzesProgress)

@@ -18,6 +18,12 @@ class UserCard(models.Model):
     birthday = models.DateField(null=True, blank=True)
     about = models.TextField(null=True, blank=True)
 
+    def __repr__(self):
+        return "<UserCard #%s for user #%s>" % (self.id, self.person_id)
+
+    def __str__(self):
+        return "<UserCard #%s for user #%s>" % (self.id, self.person_id)
+
 
 class QuizzesProgress(models.Model):
     """QuizzesProgress - class for user progress in quizzes"""
@@ -26,3 +32,9 @@ class QuizzesProgress(models.Model):
     passed_datetime = models.DateTimeField(auto_now=True)
     correct_answers = models.FloatField()
     passed = models.BooleanField()
+
+    def __repr__(self):
+        return "<QuizzesProgress #%s from user #%s>" % (self.quizzes_id, self.person_id)
+
+    def __str__(self):
+        return "<QuizzesProgress #%s from user #%s>" % (self.quizzes_id, self.person_id)

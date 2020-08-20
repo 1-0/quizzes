@@ -24,26 +24,18 @@ from graphene_django.views import GraphQLView
 from .schema import schema
 
 from .views import Home, QuizzesView, QuestionView
+from .api import api1
 
 urlpatterns = [
     path('', Home.as_view(), name='home'),
+    path('admin/', admin.site.urls),
     path('quizzes/', QuizzesView.as_view(), name='add_quizzes'),
     path('quizzes/<int:quizzes_id>', QuizzesView.as_view(), name='view_quizzes'),
     path('quizzes/<int:quizzes_id>/question/', QuestionView.as_view(), name='add_question'),
-    path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('usercards/', include('usercards.urls')),
+    path("api1/", api1.urls),
 ]
-
-# urlpatterns += [
-#     path("graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))),
-# ]
-from graphene_django.views import GraphQLView
-
-urlpatterns += [
-    path("graphql", csrf_exempt(GraphQLView.as_view(graphiql=True))),
-]
-
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

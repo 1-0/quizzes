@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'quizzes',
     'usercards',
 
-    'graphene_django',
+    # 'graphene_django',
 
     'allauth',
     'allauth.account',

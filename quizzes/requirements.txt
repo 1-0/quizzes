@@ -8,10 +8,11 @@ defusedxml==0.6.0
 Django==3.0.8
 django-allauth==0.42.0
 django-debug-toolbar==2.2
-graphene==2.1.8
-graphene-django==2.13.0
-graphql-core==2.3.2
-graphql-relay==2.0.1
+django-ninja==0.4.0
+# graphene==2.1.8
+# graphene-django==2.13.0
+# graphql-core==2.3.2
+# graphql-relay==2.0.1
 idna==2.10
 isort==4.3.21
 lazy-object-proxy==1.4.3
@@ -19,7 +20,8 @@ mccabe==0.6.1
 oauthlib==3.1.0
 Pillow==7.2.0
 promise==2.3
-pylint==2.5.3
+pydantic==1.6.1
+# pylint==2.5.3
 python3-openid==3.2.0
 pytz==2020.1
 requests==2.24.0

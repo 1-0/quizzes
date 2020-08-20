@@ -1,15 +1,16 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .models import Quizzes, Question, Answer, FS
+from .models import Quizzes, Question, Answer, Comment, FS
 from ninja import NinjaAPI
+from ninja.security import django_auth
 
 api1 = NinjaAPI()
 # http://127.0.0.1:8000/api1/docs#/default
 
 
-@login_required
-@api1.get("/get_quizzes")
+@api1.get("/get_quizzes", auth=django_auth)
 def quizzes(request, quizzes_id: int = 0, user_id: int = 0):
+    """quizzes(request, quizzes_id: int = 0, user_id: int = 0) - return quizzes"""
     res = {}
     quizzes = {}
     if not quizzes_id and not user_id:
@@ -52,8 +53,9 @@ def quizzes(request, quizzes_id: int = 0, user_id: int = 0):
 
 
 @login_required
-@api1.get("/get_questions")
+@api1.get("/get_questions", auth=django_auth)
 def questions(request, quizzes_id: int = 0):
+    """questions(request, quizzes_id: int = 0) - return questions"""
     res = {}
     questions = {}
     if quizzes_id:
@@ -74,8 +76,9 @@ def questions(request, quizzes_id: int = 0):
 
 
 @login_required
-@api1.get("/get_answers")
+@api1.get("/get_answers", auth=django_auth)
 def answers(request, question_id: int = 0):
+    """answers(request, question_id: int = 0) - return answers"""
     res = {}
     answers = {}
     if question_id:
@@ -92,4 +95,41 @@ def answers(request, question_id: int = 0):
             res['Error'] = "No answers for questions id=%s" % (question_id,)
     else:
         res['Error'] = "No questions id for get answers"
+    return res
+
+
+@api1.get("/get_comments", auth=django_auth)
+def comments(request, quizzes_id: int = 0, user_id: int = 0):
+    """comments(request, quizzes_id: int = 0, user_id: int = 0) - return comments"""
+    res = {}
+    comments = {}
+    if quizzes_id:
+        # http://127.0.0.1:8000/api1/get_comments?quizzes_id=6
+        try:
+            comments_all = Comment.objects.filter(quizzes_id=quizzes_id)
+            for c in comments_all:
+                cur_c = {
+                    "person_id": c.person_id,
+                    "person_username": c.person.username,
+                    "content": c.content
+                }
+                comments[c.id] = cur_c
+            res['comments'] = comments
+        except:
+            res['Error'] = "No comments for quizzes id=%s" % (quizzes_id,)
+    elif user_id:
+        # http://127.0.0.1:8000/api1/get_comments?user_id=2
+        try:
+            comments_all = Comment.objects.filter(person_id=user_id)
+            for c in comments_all:
+                cur_c = {
+                    "quizzes_id": c.quizzes_id,
+                    "content": c.content
+                }
+                comments[c.id] = cur_c
+            res['comments'] = comments
+        except:
+            res['Error'] = "No comments for user id=%s" % (quizzes_id,)
+    else:
+        res['Error'] = "No id's for get comments"
     return res

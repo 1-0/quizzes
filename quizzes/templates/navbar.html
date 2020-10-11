@@ -58,6 +58,15 @@
     {#<!--                    </div>-->#}
     {#<!--                </div>-->#}
     {#<!--            {% endif %}-->#}
+                {% if user.is_superuser %}
+                    <li>
+                        <a href="/admin"
+                        >
+                <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                            Admin Site
+                        </a>
+                    </li>
+                {% endif %}
                 {% if user.is_authenticated %}
                     <li>
                         <a href="{% url 'add_quizzes' %}"

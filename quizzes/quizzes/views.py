@@ -10,13 +10,17 @@ from .models import Quizzes, Question, FS
 from .forms import QuizzesForm, QuestionForm
 
 
+def hello(request):
+    return HttpResponse('hello')
+
+
 class Home(FormView):
     """Home - view class for home page"""
     model_class = Quizzes
     template_name = 'home.html'
 
     def get(self, request, *args, **kwargs):
-        quizzes_all = self.model_class.objects.all()
+        quizzes_all = self.model_class.objects.all().order_by('publ_d_time').reverse()
         paginator = Paginator(quizzes_all, 10)
         page_number = request.GET.get('page')
         quizzes_list = paginator.get_page(page_number)

@@ -10,10 +10,6 @@ from .models import Quizzes, Question, FS
 from .forms import QuizzesForm, QuestionForm
 
 
-def hello(request):
-    return HttpResponse('hello')
-
-
 class Home(FormView):
     """Home - view class for home page"""
     model_class = Quizzes
@@ -64,7 +60,9 @@ class QuizzesView(FormView):
             },
         )
 
+    @login_required
     def post(self, request, quizzes_id=None, *args, **kwargs):
+        photo_quizzes = None
         if quizzes_id:
             quizzes = self.model_class.objects.get(pk=quizzes_id)
         else:
@@ -75,7 +73,7 @@ class QuizzesView(FormView):
             instance=quizzes
         )
         if quizzes.photo.name:
-            old_file = "" + quizzes.photo.name
+            old_file = quizzes.photo.name
         else:
             old_file = None
         if form.is_valid():
@@ -124,7 +122,7 @@ class QuestionView(FormView):
             else:
                 return redirect(r'/')
         else:
-            quizzes = self.model_class()
+            question = self.model_class()
             if request.user:
                 form = self.form_class()
             else:
@@ -134,13 +132,15 @@ class QuestionView(FormView):
             self.template_name,
             {
                 'form': form,
-                'quizzes': quizzes,
+                'question': question,
                 'quizzes_id': quizzes_id,
                 'question_id': question_id,
             },
         )
 
+    @login_required
     def post(self, request, quizzes_id=None, question_id=None, *args, **kwargs):
+        photo_question = None
         if question_id:
             question = self.model_class.objects.get(pk=question_id)
         else:
@@ -151,13 +151,13 @@ class QuestionView(FormView):
             instance=question
         )
         if question.photo.name:
-            old_file = "" + question.photo.name
+            old_file = question.photo.name
         else:
             old_file = None
+        if len(request.FILES) > 0:
+            photo_question = request.FILES.get('photo', None)
+            photo_question.name = '.'.join([request.user.username, photo_question.name.split('.')[-1]])
         if form.is_valid():
-            if len(request.FILES) > 0:
-                photo_question = request.FILES.get('photo', None)
-                photo_question.name = '.'.join([request.user.username, photo_question.name.split('.')[-1]])
             if form.save():
                 messages.add_message(
                     request,

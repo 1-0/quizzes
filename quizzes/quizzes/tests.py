@@ -1,62 +1,76 @@
-from django.test import Client, TestCase
-from django.contrib.auth.models import User
+# from django.test import Client, TestCase
+from django.test import RequestFactory, TestCase
+from django.contrib.auth.models import AnonymousUser, User
 from .models import Quizzes, Question, Answer, Comment
+from .views import Home, QuizzesView, QuestionView
 
 
 class QuizzesViewTest(TestCase):
     """QuizzesViewTest - class for test quizzes views"""
-    user = None
-    quizzes = None
 
     def setUp(self):
-        QuizzesViewTest.user = User.objects.create_user(
+        self.user = User.objects.create_user(
             username="test_user",
+            email='test_user@gmail.com',
+            password='test_user_secret',
+            first_name='Joe',
+            last_name='Doe'
         )
-        QuizzesViewTest.quizzes = Quizzes.objects.create(
+        self.quizzes = Quizzes.objects.create(
             title="Test",
-            q_person=QuizzesViewTest.user,
+            q_person=self.user,
             content="Test Quizzes",
             is_publ=True
         )
+        self.factory = RequestFactory()
 
     def test_home(self):
-        response = self.client.get('/')
-        self.assertNotEqual(response.status_code, 404)
-
-    def test_admin(self):
-        response = self.client.get('/admin/')
-        self.assertNotEqual(response.status_code, 404)
+        request = self.factory.get('/')
+        request.user = self.user
+        response = Home.as_view()(request)
+        self.assertEqual(response.status_code, 200)
 
     def test_add_quizzes(self):
-        response = self.client.get('/quizzes/')
-        self.assertNotEqual(response.status_code, 404)
+        request = self.factory.get('/quizzes/')
+        request.user = self.user
+        response = QuizzesView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
 
     def test_view_quizzes(self):
-        p = 'quizzes/%s' % QuizzesViewTest.quizzes.id
-        response = self.client.get(p)
-        # self.assertNotEqual(response.status_code, 404)
-        self.assertEqual(response.status_code, 404)
+        request = self.factory.get('quizzes/%s' % self.quizzes.id)
+        request.user = self.user
+        response = QuizzesView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
 
 
 class QuizzesTestCase(TestCase):
-    """QuizzesTestCase - class for test case"""
-    user = None
-    quizzes = None
+    """QuizzesTestCase - class for quizzes test case"""
 
     def setUp(self):
-        QuizzesTestCase.user = User.objects.create_user(
+        self.user = User.objects.create_user(
             username="test_user",
+            email='test_user@gmail.com',
+            password='test_user_secret',
+            first_name='Joe',
+            last_name='Doe'
         )
-        QuizzesTestCase.quizzes = Quizzes.objects.create(
+        self.quizzes = Quizzes.objects.create(
             title="Test",
-            q_person=QuizzesTestCase.user,
+            q_person=self.user,
             content="Test Quizzes",
             is_publ=True
+        )
+
+    def test_quizzes_id(self):
+        """test_quizzes_id - Quizzes id test"""
+        self.assertEqual(
+            self.quizzes.id,
+            1
         )
 
     def test_quizzes_str(self):
         """test_quizzes_str - Quizzes string test"""
         self.assertEqual(
-            QuizzesTestCase.quizzes.__str__(),
+            self.quizzes.__str__(),
             '<Quizzes #1 from user #1>'
         )

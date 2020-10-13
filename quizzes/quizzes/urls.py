@@ -23,12 +23,11 @@ from django.views.decorators.csrf import csrf_exempt
 from graphene_django.views import GraphQLView
 from .schema import schema
 
-from .views import Home, QuizzesView, QuestionView, hello
+from .views import Home, QuizzesView, QuestionView
 from .api import api1
 
 urlpatterns = [
     path('', Home.as_view(), name='home'),
-    path('hello', hello, name='hello'),
     path('admin/', admin.site.urls),
     path('quizzes/', QuizzesView.as_view(), name='add_quizzes'),
     path('quizzes/<int:quizzes_id>', QuizzesView.as_view(), name='view_quizzes'),

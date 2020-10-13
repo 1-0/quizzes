@@ -62,7 +62,7 @@ class QuizzesViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.content,
-            b'{"quizzes": {"title": "Test", "content": "Test Quizzes"}}'
+            b'{"quizzes": {"id": 1, "title": "Test", "content": "Test Quizzes"}}'
         )
 
     def test_view_quizzes(self):

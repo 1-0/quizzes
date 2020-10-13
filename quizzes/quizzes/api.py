@@ -31,7 +31,11 @@ def quizzes(request, quizzes_id: int = 0, user_id: int = 0):
         # http://127.0.0.1:8000/api1/get_quizzes?quizzes_id=6
         try:
             q = Quizzes.objects.get(pk=quizzes_id)
-            cur_q = {"title": q.title, "content": q.content}
+            cur_q = {
+                "id": q.id,
+                "title": q.title,
+                "content": q.content
+            }
             if q.photo:
                 cur_q["photo"] = q.photo.name
             res['quizzes'] = cur_q
@@ -68,7 +72,11 @@ def questions(request, quizzes_id: int = 0, question_id: int = 0):
         # http://127.0.0.1:8000/api1/get_questions?question_id=1
         try:
             q = Question.objects.get(pk=question_id)
-            cur_q = {"quizzes": q.quizzes.id, "content": q.content}
+            cur_q = {
+                "id": q.id,
+                "quizzes": q.quizzes.id,
+                "content": q.content
+            }
             if q.photo:
                 cur_q["photo"] = q.photo.name
             res['question'] = cur_q
@@ -90,7 +98,9 @@ def answers(request, question_id: int = 0, answer_id: int = 0):
         # http://127.0.0.1:8000/api1/get_answers?question_id=1
         answers_all = Answer.objects.filter(question=question_id)
         for a in answers_all:
-            cur_a = {"content": a.content}
+            cur_a = {
+                "content": a.content,
+            }
             if a.photo:
                 cur_a["photo"] = a.photo.name
             res_answers[a.id] = cur_a
@@ -98,7 +108,11 @@ def answers(request, question_id: int = 0, answer_id: int = 0):
     elif answer_id:
         try:
             a = Answer.objects.get(pk=answer_id)
-            cur_a = {"question": a.question.id, "content": a.content}
+            cur_a = {
+                "id": a.id,
+                "question": a.question.id,
+                "content": a.content
+            }
             if a.photo:
                 cur_a["photo"] = a.photo.name
             res['answer'] = cur_a
@@ -114,7 +128,7 @@ def comments(request, quizzes_id: int = 0, user_id: int = 0, comment_id: int = 0
     """comments(request, quizzes_id: int = 0, user_id: int = 0, comment_id: int = 0) -
     return comments"""
     res = {}
-    comments = {}
+    res_comments = {}
     if quizzes_id:
         # http://127.0.0.1:8000/api1/get_comments?quizzes_id=6
         comments_all = Comment.objects.filter(quizzes=quizzes_id)
@@ -124,8 +138,8 @@ def comments(request, quizzes_id: int = 0, user_id: int = 0, comment_id: int = 0
                 "person_username": c.person.username,
                 "content": c.content
             }
-            comments[c.id] = cur_c
-        res['comments'] = comments
+            res_comments[c.id] = cur_c
+        res['comments'] = res_comments
     elif user_id:
         # http://127.0.0.1:8000/api1/get_comments?user_id=2
         comments_all = Comment.objects.filter(person_id=user_id)
@@ -134,20 +148,20 @@ def comments(request, quizzes_id: int = 0, user_id: int = 0, comment_id: int = 0
                 "quizzes_id": c.quizzes_id,
                 "content": c.content
             }
-            comments[c.id] = cur_c
-        res['comments'] = comments
+            res_comments[c.id] = cur_c
+        res['comments'] = res_comments
     elif comment_id:
         # http://127.0.0.1:8000/api1/get_comments?comment_id=1
         try:
             c = Comment.objects.get(pk=comment_id)
             cur_c = {
+                "id": c.id,
                 "quizzes_id": c.quizzes_id,
                 "person_id": c.person_id,
                 "person_username": c.person.username,
                 "content": c.content
             }
-            comments[c.id] = cur_c
-            res['comment'] = comments
+            res['comment'] = cur_c
         except Comment.DoesNotExist:
             res['Error'] = "No comments id=%s" % (comment_id,)
     else:

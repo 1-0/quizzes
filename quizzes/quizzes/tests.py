@@ -1,4 +1,3 @@
-# from django.test import Client, TestCase
 from django.test import RequestFactory, TestCase
 from django.contrib.auth.models import AnonymousUser, User
 from .models import Quizzes, Question, Answer, Comment

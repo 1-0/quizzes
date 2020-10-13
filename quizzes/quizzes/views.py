@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
@@ -105,9 +106,10 @@ class QuizzesView(FormView):
         )
 
 
-class QuestionView(FormView):
+class QuestionView(LoginRequiredMixin, FormView):
     """QuestionView - view class for question view page"""
 
+    login_url = '/accounts/login/'
     model_class = Question
     form_class = QuestionForm
     template_name = r"quizzes/question_model_form.html"
@@ -138,7 +140,6 @@ class QuestionView(FormView):
             },
         )
 
-    @login_required
     def post(self, request, quizzes_id=None, question_id=None, *args, **kwargs):
         photo_question = None
         if question_id:

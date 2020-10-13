@@ -16,7 +16,7 @@
    - Users comments list + adding comments
 * User card page
    - User profile photo
-   - User first name имя
+   - User first name
    - User second name
    - User date of birthday
    - User about information

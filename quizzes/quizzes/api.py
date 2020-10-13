@@ -54,14 +54,14 @@ def quizzes(request, quizzes_id: int = 0, user_id: int = 0):
 
 @login_required
 @api1.get("/get_questions", auth=django_auth)
-def questions(request, quizzes_id: int = 0):
+def questions(request, quizzes_id: int = 0, question_id: int = 0):
     """questions(request, quizzes_id: int = 0) - return questions"""
     res = {}
     questions = {}
     if quizzes_id:
         # http://127.0.0.1:8000/api1/get_questions?quizzes_id=6
         try:
-            questions_all = Question.objects.filter(quizzes_id=quizzes_id)
+            questions_all = Question.objects.filter(quizzes=quizzes_id)
             for q in questions_all:
                 cur_q = {"content": q.content}
                 if q.photo:
@@ -70,21 +70,31 @@ def questions(request, quizzes_id: int = 0):
             res['questions'] = questions
         except:
             res['Error'] = "No questions for quizzes id=%s" % (quizzes_id,)
+    elif question_id:
+        # http://127.0.0.1:8000/api1/get_questions?question_id=1
+        try:
+            q = Question.objects.get(pk=question_id)
+            cur_q = {"quizzes": q.quizzes.id, "content": q.content}
+            if q.photo:
+                cur_q["photo"] = q.photo.name
+            res['question'] = cur_q
+        except:
+            res['Error'] = "No question id=%s" % (question_id, )
     else:
-        res['Error'] = "No quizzes id for get questions"
+        res['Error'] = "No questions"
     return res
 
 
 @login_required
 @api1.get("/get_answers", auth=django_auth)
-def answers(request, question_id: int = 0):
+def answers(request, question_id: int = 0, answer_id: int = 0):
     """answers(request, question_id: int = 0) - return answers"""
     res = {}
     answers = {}
     if question_id:
-        # http://127.0.0.1:8000/api1/get_answers?question_id=6
+        # http://127.0.0.1:8000/api1/get_answers?question_id=1
         try:
-            answers_all = Answer.objects.filter(question_id=question_id)
+            answers_all = Answer.objects.filter(question=question_id)
             for a in answers_all:
                 cur_a = {"content": a.content}
                 if a.photo:
@@ -93,6 +103,16 @@ def answers(request, question_id: int = 0):
             res['answers'] = answers
         except:
             res['Error'] = "No answers for questions id=%s" % (question_id,)
+    elif answer_id:
+        # http://127.0.0.1:8000/api1/get_answers?answer_id=1
+        try:
+            a = Answer.objects.get(pk=answer_id)
+            cur_a = {"question": a.question.id, "content": a.content}
+            if a.photo:
+                cur_a["photo"] = a.photo.name
+            res['answer'] = cur_a
+        except:
+            res['Error'] = "No answers id=%s" % (question_id, )
     else:
         res['Error'] = "No questions id for get answers"
     return res

@@ -18,7 +18,7 @@ class UserCardViewTest(TestCase):
         )
         self.user_card = UserCard.objects.create(
             person=self.user,
-            birthday=datetime.date.fromisoformat('1970-01-01'),
+            birthday=datetime.date(1970, 1, 1),
             about="Test User About",
         )
         self.factory = RequestFactory()
@@ -43,7 +43,7 @@ class UserCardTestCase(TestCase):
         )
         self.user_card = UserCard.objects.create(
             person=self.user,
-            birthday=datetime.date.fromisoformat('1970-01-01'),
+            birthday=datetime.date(1970, 1, 1),
             about="Test User About",
         )
         self.factory = RequestFactory()

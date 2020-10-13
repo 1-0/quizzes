@@ -76,8 +76,15 @@ class Comment(models.Model):
     readonly_fields = ('published_datetime',)
 
     def __repr__(self):
-        return "<Comment #%s from user #%s>" % (self.id, self.person_id)
+        return "<Comment #%s from user #%s to quizzes #%s>" % (
+            self.id,
+            self.person_id,
+            self.quizzes_id
+        )
 
     def __str__(self):
-        return "<Comment #%s from user #%s>" % (self.id, self.person_id)
-
+        return "<Comment #%s from user #%s to quizzes #%s>" % (
+            self.id,
+            self.person_id,
+            self.quizzes_id
+        )

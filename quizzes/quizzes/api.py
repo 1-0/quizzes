@@ -55,7 +55,7 @@ def quizzes(request, quizzes_id: int = 0, user_id: int = 0):
 @login_required
 @api1.get("/get_questions", auth=django_auth)
 def questions(request, quizzes_id: int = 0, question_id: int = 0):
-    """questions(request, quizzes_id: int = 0) - return questions"""
+    """questions(request, quizzes_id: int = 0, question_id: int = 0) - return questions"""
     res = {}
     questions = {}
     if quizzes_id:
@@ -88,7 +88,8 @@ def questions(request, quizzes_id: int = 0, question_id: int = 0):
 @login_required
 @api1.get("/get_answers", auth=django_auth)
 def answers(request, question_id: int = 0, answer_id: int = 0):
-    """answers(request, question_id: int = 0) - return answers"""
+    """answers(request, question_id: int = 0, answer_id: int = 0) -
+    return answers"""
     res = {}
     answers = {}
     if question_id:
@@ -112,21 +113,22 @@ def answers(request, question_id: int = 0, answer_id: int = 0):
                 cur_a["photo"] = a.photo.name
             res['answer'] = cur_a
         except:
-            res['Error'] = "No answers id=%s" % (question_id, )
+            res['Error'] = "No answers id=%s" % (answer_id, )
     else:
-        res['Error'] = "No questions id for get answers"
+        res['Error'] = "No answers"
     return res
 
 
 @api1.get("/get_comments", auth=django_auth)
-def comments(request, quizzes_id: int = 0, user_id: int = 0):
-    """comments(request, quizzes_id: int = 0, user_id: int = 0) - return comments"""
+def comments(request, quizzes_id: int = 0, user_id: int = 0, comment_id: int = 0):
+    """comments(request, quizzes_id: int = 0, user_id: int = 0, comment_id: int = 0) -
+    return comments"""
     res = {}
     comments = {}
     if quizzes_id:
         # http://127.0.0.1:8000/api1/get_comments?quizzes_id=6
         try:
-            comments_all = Comment.objects.filter(quizzes_id=quizzes_id)
+            comments_all = Comment.objects.filter(quizzes=quizzes_id)
             for c in comments_all:
                 cur_c = {
                     "person_id": c.person_id,
@@ -150,6 +152,20 @@ def comments(request, quizzes_id: int = 0, user_id: int = 0):
             res['comments'] = comments
         except:
             res['Error'] = "No comments for user id=%s" % (quizzes_id,)
+    elif comment_id:
+        # http://127.0.0.1:8000/api1/get_comments?comment_id=1
+        try:
+            c = Comment.objects.get(pk=comment_id)
+            cur_c = {
+                "quizzes_id": c.quizzes_id,
+                "person_id": c.person_id,
+                "person_username": c.person.username,
+                "content": c.content
+            }
+            comments[c.id] = cur_c
+            res['comment'] = comments
+        except:
+            res['Error'] = "No comments id=%s" % (comment_id,)
     else:
         res['Error'] = "No id's for get comments"
     return res

@@ -1,4 +1,4 @@
-from django.test import RequestFactory, TestCase
+from django.test import RequestFactory, TestCase, Client
 from django.contrib.auth.models import AnonymousUser, User
 from .models import Quizzes, Question, Answer, Comment
 from .views import Home, QuizzesView, QuestionView
@@ -34,6 +34,36 @@ class QuizzesViewTest(TestCase):
         request.user = self.user
         response = QuizzesView.as_view()(request)
         self.assertEqual(response.status_code, 200)
+
+    def test_api_all_quizzes(self):
+        c = Client()
+        c.login(username='test_user', password='test_user_secret')
+        response = c.get('/api1/get_quizzes')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.content,
+            b'{"quizzes": {"1": {"title": "Test", "content": "Test Quizzes"}}}'
+        )
+
+    def test_api_user_quizzes(self):
+        c = Client()
+        c.login(username='test_user', password='test_user_secret')
+        response = c.get('/api1/get_quizzes?user_id=%s' % (self.user.id, ))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.content,
+            b'{"quizzes": {"1": {"title": "Test", "content": "Test Quizzes"}}}'
+        )
+
+    def test_api_quizzes_id(self):
+        c = Client()
+        c.login(username='test_user', password='test_user_secret')
+        response = c.get('/api1/get_quizzes?quizzes_id=%s' % (self.quizzes.id, ))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.content,
+            b'{"quizzes": {"title": "Test", "content": "Test Quizzes"}}'
+        )
 
     def test_view_quizzes(self):
         request = self.factory.get('quizzes/%s' % self.quizzes.id)

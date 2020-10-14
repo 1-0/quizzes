@@ -48,7 +48,7 @@ class QuizzesViewTest(TestCase):
     def test_api_user_quizzes(self):
         c = Client()
         c.login(username='test_user', password='test_user_secret')
-        response = c.get('/api1/get_quizzes?user_id=%s' % (self.user.id, ))
+        response = c.get('/api1/get_quizzes', {'user_id': self.user.id})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.content,
@@ -58,7 +58,7 @@ class QuizzesViewTest(TestCase):
     def test_api_quizzes_id(self):
         c = Client()
         c.login(username='test_user', password='test_user_secret')
-        response = c.get('/api1/get_quizzes?quizzes_id=%s' % (self.quizzes.id, ))
+        response = c.get('/api1/get_quizzes', {'quizzes_id': self.quizzes.id})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.content,

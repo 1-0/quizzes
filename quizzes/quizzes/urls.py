@@ -36,10 +36,10 @@ non_translatable_urlpatterns = [
     path("api1/", api1.urls),
     path('admin/', admin.site.urls),
     url(r'^i18n/$', set_language, name='set_language'),
+    path('', Home.as_view(), name='home'),
 ]
 
 translatable_urlpatterns = [
-    path('', Home.as_view(), name='home'),
     path('quizzes/', QuizzesView.as_view(), name='add_quizzes'),
     path('quizzes/<int:quizzes_id>', QuizzesView.as_view(), name='view_quizzes'),
     path('quizzes/<int:quizzes_id>/question/', QuestionView.as_view(), name='add_question'),

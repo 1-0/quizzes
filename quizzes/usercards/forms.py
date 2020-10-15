@@ -20,7 +20,7 @@ class UserInfo(forms.ModelForm):
         model = User
         fields = ('first_name', 'last_name', 'email', 'date_joined')
         labels = {
-            'first_name': _('First name'),
+            'first_name': _('First Name'),  # 'first_name': _('First Name'),
             'last_name': _('Last Name'),
             'email': _('E-mail'),
             'date_joined': _('Date Joined'),

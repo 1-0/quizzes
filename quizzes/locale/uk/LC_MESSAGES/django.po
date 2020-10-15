@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-10-15 02:47+0300\n"
-"PO-Revision-Date: 2020-10-15 03:05+0300\n"
+"POT-Creation-Date: 2020-10-15 10:21+0300\n"
+"PO-Revision-Date: 2020-10-15 10:22+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: uk\n"
@@ -17,68 +17,80 @@ msgstr ""
 "X-Poedit-SearchPath-1: usercards\n"
 "X-Poedit-SearchPath-2: templates\n"
 
-#: quizzes/forms.py:11
+#: quizzes/forms.py:12
 msgid "Answer content"
 msgstr "Зміст відповіді"
 
-#: quizzes/forms.py:12
+#: quizzes/forms.py:13
 msgid "Answer image"
 msgstr "Зображення відповіді"
 
-#: quizzes/forms.py:13
+#: quizzes/forms.py:14
 msgid "Correct answer"
 msgstr "Правильна відповідь"
 
-#: quizzes/forms.py:27
+#: quizzes/forms.py:28
 msgid "Question content"
 msgstr "Зміст питання"
 
-#: quizzes/forms.py:28
+#: quizzes/forms.py:29
 msgid "Question image"
 msgstr "Зображення питання"
 
-#: quizzes/forms.py:38
+#: quizzes/forms.py:39
 msgid "Published"
 msgstr "Опубліковано"
 
-#: quizzes/forms.py:56
+#: quizzes/forms.py:57
 msgid "Quizzes title"
 msgstr "Назва опитування"
 
-#: quizzes/forms.py:57
+#: quizzes/forms.py:58
 msgid "Quizzes content"
 msgstr "Зміст опитування"
 
-#: quizzes/forms.py:58
+#: quizzes/forms.py:59
 msgid "Quizzes image"
 msgstr "Зображення опитування"
 
-#: quizzes/forms.py:59
+#: quizzes/forms.py:60
 msgid "Quizzes published"
 msgstr "Опитування опубліковано"
 
-#: quizzes/forms.py:60
+#: quizzes/forms.py:61
 msgid "Quizzes published datetime"
 msgstr "Дата та час публікації опитування"
 
-#: quizzes/views.py:89
+#: quizzes/settings.py:65 quizzes/settings.py:194
+msgid "English"
+msgstr "Англійська"
+
+#: quizzes/settings.py:66 quizzes/settings.py:195
+msgid "Russian"
+msgstr "Російська"
+
+#: quizzes/settings.py:67 quizzes/settings.py:196
+msgid "Ukrainian"
+msgstr "Українська"
+
+#: quizzes/views.py:88
 msgid "Quizzes Data is saved"
 msgstr "Данні опитування збережено"
 
-#: quizzes/views.py:97
+#: quizzes/views.py:96
 msgid "Quizzes Data is not saved"
 msgstr "Данні опитування не збережено"
 
-#: quizzes/views.py:167
+#: quizzes/views.py:166
 msgid "Question Data is saved"
 msgstr "Данні питання збережено"
 
-#: quizzes/views.py:175
+#: quizzes/views.py:174
 msgid "Question Data is not saved"
 msgstr "Данні питання не збережено"
 
 #: usercards/forms.py:23
-msgid "First name"
+msgid "First Name"
 msgstr "Ім'я"
 
 #: usercards/forms.py:24

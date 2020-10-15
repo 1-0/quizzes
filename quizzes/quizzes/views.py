@@ -7,6 +7,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView
 from django.http import HttpResponse
+from django.utils.translation import gettext as _
 from .models import Quizzes, Question, FS
 from .forms import QuizzesForm, QuestionForm
 
@@ -85,7 +86,7 @@ class QuizzesView(FormView):
                 messages.add_message(
                     request,
                     messages.SUCCESS,
-                    'Quizzes Data is saved'
+                    _('Quizzes Data is saved')
                 )
                 if len(request.FILES) > 0 and photo_quizzes and old_file:
                     FS.delete(old_file)
@@ -93,7 +94,7 @@ class QuizzesView(FormView):
                 messages.add_message(
                     request,
                     messages.SUCCESS,
-                    'Quizzes Data is not saved'
+                    _('Quizzes Data is not saved')
                 )
         return render(
             request,
@@ -163,7 +164,7 @@ class QuestionView(LoginRequiredMixin, FormView):
                 messages.add_message(
                     request,
                     messages.SUCCESS,
-                    'Question Data is saved'
+                    _('Question Data is saved')
                 )
                 if len(request.FILES) > 0 and photo_question and old_file:
                     FS.delete(old_file)
@@ -171,7 +172,7 @@ class QuestionView(LoginRequiredMixin, FormView):
                 messages.add_message(
                     request,
                     messages.SUCCESS,
-                    'Question Data is not saved'
+                    _('Question Data is not saved')
                 )
         return render(
             request,

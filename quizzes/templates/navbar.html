@@ -24,7 +24,7 @@
 ">
                 <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
 {#                <i class="material-icons left ">dvr</i>#}
-                Quizzes
+                {% trans "Quizzes" %}
             </a>
             </div>
             <a href="#" data-target="mobile-nav"
@@ -63,7 +63,7 @@
                         <a href="/admin"
                         >
                 <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-                            Admin Site
+                            {% trans "Admin Site" %}
                         </a>
                     </li>
                 {% endif %}
@@ -83,7 +83,7 @@
                         >
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 {#                            <i class="material-icons left ">account_box</i> #}
-                            Profile {{ user.username }}
+                            {% trans "Profile" %} {{ user.username }}
                         </a>
                     </li>
                     <li>
@@ -92,7 +92,7 @@
                         >
                 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
 {#                            <i class="material-icons left ">error_outline</i> #}
-                            Log Out
+                            {% trans "Log Out" %}
                         </a>
                     </li>
                     {% else %}
@@ -102,7 +102,7 @@
                         >
                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 {#                            <i class="material-icons left ">check</i> #}
-                            Log In
+                            {% trans "Log In" %}
                         </a>
                     </li>
                     <li>
@@ -115,7 +115,7 @@
                     <li>
                         <a href="{% provider_login_url 'github' %}"
 {#                             class="waves-effect waves-light" #}
-                             title="Sign Up by github"
+                             title="{% trans 'Sign Up by github' %}"
                         >
 {#                            <img src="https://image.flaticon.com/icons/svg/25/25231.svg" alt="Sign Up by github" height="32" width="32">#}
                 <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>

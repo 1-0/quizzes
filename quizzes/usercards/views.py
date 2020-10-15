@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.utils.translation import gettext as _
 from .forms import UserInfo, UserCard
 from .models import FS
 from .models import UserCard as UCard
@@ -37,7 +38,7 @@ def show_user(request, user_name):
             valid_user = user_name
             new_forms = []
             saved_form = []
-            old_file = "" + user_data.photo.name
+            old_file = user_data.photo.name
             if len(request.FILES) > 0:
                 photo_user = request.FILES.get('photo', None)
                 photo_user.name = '.'.join([user_name, photo_user.name.split('.')[-1]])
@@ -59,7 +60,7 @@ def show_user(request, user_name):
                 messages.add_message(
                     request,
                     messages.SUCCESS,
-                    'Data is saved'
+                    _('Data is saved')
                 )
                 if photo_user:
                     FS.delete(old_file)
@@ -67,7 +68,7 @@ def show_user(request, user_name):
                 messages.add_message(
                     request,
                     messages.SUCCESS,
-                    'Data is not saved'
+                    _('Data is not saved')
                 )
 
     return render(

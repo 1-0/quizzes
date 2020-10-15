@@ -1,0 +1,114 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2020-10-15 02:47+0300\n"
+"PO-Revision-Date: 2020-10-15 03:05+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-Basepath: ../../..\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-SearchPath-0: quizzes\n"
+"X-Poedit-SearchPath-1: usercards\n"
+"X-Poedit-SearchPath-2: templates\n"
+
+#: quizzes/forms.py:11
+msgid "Answer content"
+msgstr "Зміст відповіді"
+
+#: quizzes/forms.py:12
+msgid "Answer image"
+msgstr "Зображення відповіді"
+
+#: quizzes/forms.py:13
+msgid "Correct answer"
+msgstr "Правильна відповідь"
+
+#: quizzes/forms.py:27
+msgid "Question content"
+msgstr "Зміст питання"
+
+#: quizzes/forms.py:28
+msgid "Question image"
+msgstr "Зображення питання"
+
+#: quizzes/forms.py:38
+msgid "Published"
+msgstr "Опубліковано"
+
+#: quizzes/forms.py:56
+msgid "Quizzes title"
+msgstr "Назва опитування"
+
+#: quizzes/forms.py:57
+msgid "Quizzes content"
+msgstr "Зміст опитування"
+
+#: quizzes/forms.py:58
+msgid "Quizzes image"
+msgstr "Зображення опитування"
+
+#: quizzes/forms.py:59
+msgid "Quizzes published"
+msgstr "Опитування опубліковано"
+
+#: quizzes/forms.py:60
+msgid "Quizzes published datetime"
+msgstr "Дата та час публікації опитування"
+
+#: quizzes/views.py:89
+msgid "Quizzes Data is saved"
+msgstr "Данні опитування збережено"
+
+#: quizzes/views.py:97
+msgid "Quizzes Data is not saved"
+msgstr "Данні опитування не збережено"
+
+#: quizzes/views.py:167
+msgid "Question Data is saved"
+msgstr "Данні питання збережено"
+
+#: quizzes/views.py:175
+msgid "Question Data is not saved"
+msgstr "Данні питання не збережено"
+
+#: usercards/forms.py:23
+msgid "First name"
+msgstr "Ім'я"
+
+#: usercards/forms.py:24
+msgid "Last Name"
+msgstr "Прізвище"
+
+#: usercards/forms.py:25
+msgid "E-mail"
+msgstr "Адреса електронної пошти"
+
+#: usercards/forms.py:26
+msgid "Date Joined"
+msgstr "Дата реєстрації"
+
+#: usercards/forms.py:36
+msgid "About"
+msgstr "Про"
+
+#: usercards/forms.py:37
+msgid "Birthday"
+msgstr "День народження"
+
+#: usercards/forms.py:38
+msgid "Photo"
+msgstr "Фотографія"
+
+#: usercards/views.py:63
+msgid "Data is saved"
+msgstr "Данні збережено"
+
+#: usercards/views.py:71
+msgid "Data is not saved"
+msgstr "Данні не збережено"

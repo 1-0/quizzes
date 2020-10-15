@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.utils.translation import gettext as _
 from .models import UserCard
 
 
@@ -19,10 +20,10 @@ class UserInfo(forms.ModelForm):
         model = User
         fields = ('first_name', 'last_name', 'email', 'date_joined')
         labels = {
-            'first_name': 'First name',
-            'last_name': 'Last Name',
-            'email': 'E-mail',
-            'date_joined': 'Date Joined',
+            'first_name': _('First name'),
+            'last_name': _('Last Name'),
+            'email': _('E-mail'),
+            'date_joined': _('Date Joined'),
         }
 
 
@@ -32,9 +33,9 @@ class UserCard(forms.ModelForm):
         model = UserCard
         fields = ('about', 'birthday', 'photo')
         labels = {
-            'about': 'About',
-            'birthday': 'Birthday',
-            'photo': 'Photo',
+            'about': _('About'),
+            'birthday': _('Birthday'),
+            'photo': _('Photo'),
         }
         widgets = {
             'about': forms.Textarea(attrs={'type': 'html'}),

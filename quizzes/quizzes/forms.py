@@ -8,9 +8,9 @@ class AnswerForm(forms.ModelForm):
         model = Answer
         fields = ('content', 'photo', 'correct')
         labels = {
-            'content': 'Answer content',
-            'photo': 'Answer image',
-            'correct': 'Correct answer',
+            'content': _('Answer content'),
+            'photo': _('Answer image'),
+            'correct': _('Correct answer'),
         }
         widgets = {
             'content': forms.Textarea(attrs={'type': 'html'}),
@@ -24,8 +24,8 @@ class QuestionForm(forms.ModelForm):
         model = Question
         fields = ('content', 'photo')
         labels = {
-            'content': 'Question content',
-            'photo': 'Question image',
+            'content': _('Question content'),
+            'photo': _('Question image'),
         }
         widgets = {
             'content': forms.Textarea(attrs={'type': 'html'}),
@@ -35,7 +35,7 @@ class QuestionForm(forms.ModelForm):
 class QuizzesForm(forms.ModelForm):
     is_publ = forms.BooleanField(
         required=False,
-        label='Published',
+        label=_('Published'),
         widget=forms.CheckboxInput(attrs={'class': 'filled-in'}),
         initial=False,
     )
@@ -53,11 +53,11 @@ class QuizzesForm(forms.ModelForm):
             # 'q_person',
         )
         labels = {
-            'title': 'Quizzes title',
-            'content': 'Quizzes content',
-            'photo': 'Quizzes image',
-            'is_publ': 'Quizzes published',
-            'publ_d_time': 'Quizzes published datetime',
+            'title': _('Quizzes title'),
+            'content': _('Quizzes content'),
+            'photo': _('Quizzes image'),
+            'is_publ': _('Quizzes published'),
+            'publ_d_time': _('Quizzes published datetime'),
         }
         widgets = {
             'content': forms.Textarea(attrs={'type': 'html'}),

@@ -62,7 +62,6 @@ class QuizzesView(FormView):
             },
         )
 
-    @login_required
     def post(self, request, quizzes_id=None, *args, **kwargs):
         photo_quizzes = None
         if quizzes_id:

@@ -10,8 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+import ast
 import os
 import django.core
+from django.utils.translation import gettext_lazy as _, pgettext_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,11 +22,54 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'Enter secret key1'
+def get_bool_from_env(name, default_value):
+    if name in os.environ:
+        value = os.environ[name]
+        try:
+            return ast.literal_eval(value)
+        except ValueError as e:
+            raise ValueError(
+                '{} is an invalid value for {}'.format(value, name)) from e
+    return default_value
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = get_bool_from_env('DEBUG', True)
+
+# SECURITY WARNING: keep the secret key used in production secret!
+if DEBUG:
+    SECRET_KEY = 'Enter secret key1'
+else:
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+
+PROJECT_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), '..'))
+
+
+# Internationalization
+# https://docs.djangoproject.com/en/3.0/topics/i18n/
+
+LANGUAGE_CODE = 'en'
+# LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'ru-ru'
+#
+TIME_ZONE = 'UTC'
+
+USE_I18N = True
+
+USE_L10N = True
+
+USE_TZ = True
+
+LANGUAGE_CODE = 'en'
+LANGUAGES = [
+    ('en', _('English')),
+    ('ru', _('Russian')),
+    ('uk', _('Ukrainian')),
+]
+LOCALE_PATHS = [os.path.join(PROJECT_ROOT, 'locale')]
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
 
 # ALLOWED_HOSTS = []
 
@@ -49,93 +94,9 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    # ... include the providers you want to enable:
-    
-    # 'allauth.socialaccount.providers.agave',
-    # 'allauth.socialaccount.providers.amazon',
-    # 'allauth.socialaccount.providers.angellist',
-    # 'allauth.socialaccount.providers.asana',
-    # 'allauth.socialaccount.providers.auth0',
-    # 'allauth.socialaccount.providers.authentiq',
-    # 'allauth.socialaccount.providers.baidu',
-    # 'allauth.socialaccount.providers.basecamp',
-    # 'allauth.socialaccount.providers.bitbucket',
-    # 'allauth.socialaccount.providers.bitbucket_oauth2',
-    # 'allauth.socialaccount.providers.bitly',
-    # 'allauth.socialaccount.providers.cern',
-    # 'allauth.socialaccount.providers.coinbase',
-    # 'allauth.socialaccount.providers.dataporten',
-    # 'allauth.socialaccount.providers.daum',
-    # 'allauth.socialaccount.providers.digitalocean',
-    # 'allauth.socialaccount.providers.discord',
-    # 'allauth.socialaccount.providers.disqus',
-    # 'allauth.socialaccount.providers.douban',
-    # 'allauth.socialaccount.providers.draugiem',
-    # 'allauth.socialaccount.providers.dropbox',
-    # 'allauth.socialaccount.providers.dwolla',
-    # 'allauth.socialaccount.providers.edmodo',
-    # 'allauth.socialaccount.providers.edx',
-    # 'allauth.socialaccount.providers.eveonline',
-    # 'allauth.socialaccount.providers.evernote',
-    # 'allauth.socialaccount.providers.exist',
-    # 'allauth.socialaccount.providers.facebook',
-    # 'allauth.socialaccount.providers.feedly',
-    # 'allauth.socialaccount.providers.fivehundredpx',
-    # 'allauth.socialaccount.providers.flickr',
-    # 'allauth.socialaccount.providers.foursquare',
-    # 'allauth.socialaccount.providers.fxa',
+
     'allauth.socialaccount.providers.github',
-    # 'allauth.socialaccount.providers.gitlab',
-    # 'allauth.socialaccount.providers.google',
-    # 'allauth.socialaccount.providers.hubic',
-    # 'allauth.socialaccount.providers.instagram',
-    # 'allauth.socialaccount.providers.jupyterhub',
-    # 'allauth.socialaccount.providers.kakao',
-    # 'allauth.socialaccount.providers.keycloak',
-    # 'allauth.socialaccount.providers.line',
-    # 'allauth.socialaccount.providers.linkedin',
-    # 'allauth.socialaccount.providers.linkedin_oauth2',
-    # 'allauth.socialaccount.providers.mailru',
-    # 'allauth.socialaccount.providers.mailchimp',
-    # 'allauth.socialaccount.providers.meetup',
-    # 'allauth.socialaccount.providers.microsoft',
-    # 'allauth.socialaccount.providers.mixer',
-    # 'allauth.socialaccount.providers.naver',
-    # 'allauth.socialaccount.providers.nextcloud',
-    # 'allauth.socialaccount.providers.odnoklassniki',
-    # 'allauth.socialaccount.providers.openid',
-    # 'allauth.socialaccount.providers.openstreetmap',
-    # 'allauth.socialaccount.providers.orcid',
-    # 'allauth.socialaccount.providers.paypal',
-    # 'allauth.socialaccount.providers.patreon',
-    # 'allauth.socialaccount.providers.persona',
-    # 'allauth.socialaccount.providers.pinterest',
-    # 'allauth.socialaccount.providers.reddit',
-    # 'allauth.socialaccount.providers.robinhood',
-    # 'allauth.socialaccount.providers.sharefile',
-    # 'allauth.socialaccount.providers.shopify',
-    # 'allauth.socialaccount.providers.slack',
-    # 'allauth.socialaccount.providers.soundcloud',
-    # 'allauth.socialaccount.providers.spotify',
-    # 'allauth.socialaccount.providers.stackexchange',
-    # 'allauth.socialaccount.providers.steam',
-    # 'allauth.socialaccount.providers.strava',
-    # 'allauth.socialaccount.providers.stripe',
-    # 'allauth.socialaccount.providers.trello',
-    # 'allauth.socialaccount.providers.tumblr',
-    # 'allauth.socialaccount.providers.twentythreeandme',
-    # 'allauth.socialaccount.providers.twitch',
-    # 'allauth.socialaccount.providers.twitter',
-    # 'allauth.socialaccount.providers.untappd',
-    # 'allauth.socialaccount.providers.vimeo',
-    # 'allauth.socialaccount.providers.vimeo_oauth2',
-    # 'allauth.socialaccount.providers.vk',
-    # 'allauth.socialaccount.providers.weibo',
-    # 'allauth.socialaccount.providers.weixin',
-    # 'allauth.socialaccount.providers.windowslive',
-    # 'allauth.socialaccount.providers.xing',
-    # 'allauth.socialaccount.providers.yandex',
-    # 'allauth.socialaccount.providers.ynab',
+
 ]
 
 MIDDLEWARE = [
@@ -165,6 +126,12 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+
             ],
         },
     },
@@ -210,14 +177,27 @@ AUTHENTICATION_BACKENDS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
+LANGUAGE_CODE = 'en'
+# LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'ru-ru'
+#
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
 USE_L10N = True
 
+USE_TZ = True
+
+LANGUAGE_CODE = 'en'
+LANGUAGES = [
+    ('en', _('English')),
+    ('ru', _('Russian')),
+    ('uk', _('Ukrainian')),
+]
+LOCALE_PATHS = [os.path.join(PROJECT_ROOT, 'locale')]
+USE_I18N = True
+USE_L10N = True
 USE_TZ = True
 
 GRAPHENE = {
@@ -277,39 +257,29 @@ if DEBUG:
 
     MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media/')
 
-    INSTALLED_APPS += [
-        'debug_toolbar',
-    ]
-
-    MIDDLEWARE += [
-        # ...
-        'debug_toolbar.middleware.DebugToolbarMiddleware',
-        # ...
-    ]
-
+    MIDDLEWARE.append(
+        'debug_toolbar.middleware.DebugToolbarMiddleware')
+    INSTALLED_APPS.append('debug_toolbar')
     DEBUG_TOOLBAR_PANELS = [
+        # adds a request history to the debug toolbar
+        # 'ddt_request_history.panels.request_history.RequestHistoryPanel',
+
         'debug_toolbar.panels.versions.VersionsPanel',
         'debug_toolbar.panels.timer.TimerPanel',
         'debug_toolbar.panels.settings.SettingsPanel',
         'debug_toolbar.panels.headers.HeadersPanel',
         'debug_toolbar.panels.request.RequestPanel',
         'debug_toolbar.panels.sql.SQLPanel',
-        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
         'debug_toolbar.panels.templates.TemplatesPanel',
+        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
         'debug_toolbar.panels.cache.CachePanel',
         'debug_toolbar.panels.signals.SignalsPanel',
         'debug_toolbar.panels.logging.LoggingPanel',
         'debug_toolbar.panels.redirects.RedirectsPanel',
         'debug_toolbar.panels.profiling.ProfilingPanel',
     ]
-
     DEBUG_TOOLBAR_CONFIG = {
-        # Toolbar options
-        'RESULTS_CACHE_SIZE': 3,
-        'SHOW_COLLAPSED': True,
-        # Panel options
-        'SQL_WARNING_THRESHOLD': 100,  # milliseconds
-    }
+        'RESULTS_CACHE_SIZE': 100}
 
     # python -m smtpd -n -c DebuggingServer localhost:1025
     #

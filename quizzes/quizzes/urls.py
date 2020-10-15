@@ -16,26 +16,39 @@ Including another URLconf
 import os
 from django.conf import settings
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path  # , include
+from django.conf.urls import include, url
+
 from django.conf.urls.static import static
 
+from django.conf.urls.i18n import i18n_patterns
+from django.views.i18n import JavaScriptCatalog, set_language
 from django.views.decorators.csrf import csrf_exempt
 from graphene_django.views import GraphQLView
 from .schema import schema
+from django.contrib.sitemaps.views import sitemap
 
 from .views import Home, QuizzesView, QuestionView
 from .api import api1
 
-urlpatterns = [
-    path('', Home.as_view(), name='home'),
+
+non_translatable_urlpatterns = [
+    path("api1/", api1.urls),
     path('admin/', admin.site.urls),
+    url(r'^i18n/$', set_language, name='set_language'),
+]
+
+translatable_urlpatterns = [
+    path('', Home.as_view(), name='home'),
     path('quizzes/', QuizzesView.as_view(), name='add_quizzes'),
     path('quizzes/<int:quizzes_id>', QuizzesView.as_view(), name='view_quizzes'),
     path('quizzes/<int:quizzes_id>/question/', QuestionView.as_view(), name='add_question'),
     path('accounts/', include('allauth.urls')),
     path('usercards/', include('usercards.urls')),
-    path("api1/", api1.urls),
 ]
+
+urlpatterns = non_translatable_urlpatterns + i18n_patterns(
+    *translatable_urlpatterns)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

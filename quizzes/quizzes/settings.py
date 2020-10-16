@@ -34,43 +34,19 @@ def get_bool_from_env(name, default_value):
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = get_bool_from_env('DEBUG', True)
+# DEBUG = get_bool_from_env('DEBUG', True)
+DEBUG = get_bool_from_env('DEBUG', False)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 if DEBUG:
     SECRET_KEY = 'Enter secret key1'
 else:
     SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'Enter secret key1'
 
 PROJECT_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), '..'))
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/3.0/topics/i18n/
-
-# LANGUAGE_CODE = 'en-us'
-# LANGUAGE_CODE = 'ru-ru'
-#
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
-
-LANGUAGE_CODE = 'en'
-LANGUAGES = [
-    ('en', _('English')),
-    ('ru', _('Russian')),
-    ('uk', _('Ukrainian')),
-]
-LOCALE_PATHS = [os.path.join(PROJECT_ROOT, 'locale')]
-USE_I18N = True
-USE_L10N = True
-USE_TZ = True
-
-# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1',]
 
 
 # Application definition
@@ -99,14 +75,14 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'quizzes.urls'
@@ -176,28 +152,23 @@ AUTHENTICATION_BACKENDS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
+LANGUAGE_COOKIE_NAME = 'django_language'
+
 LANGUAGE_CODE = 'en'
-# LANGUAGE_CODE = 'en-us'
-# LANGUAGE_CODE = 'ru-ru'
-#
-TIME_ZONE = 'UTC'
+
+TIME_ZONE = 'EST'
 
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
-
-LANGUAGE_CODE = 'en'
 LANGUAGES = [
     ('en', _('English')),
     ('ru', _('Russian')),
     ('uk', _('Ukrainian')),
 ]
 LOCALE_PATHS = [os.path.join(PROJECT_ROOT, 'locale')]
-USE_I18N = True
-USE_L10N = True
-USE_TZ = True
 
 GRAPHENE = {
     # "SCHEMA": "quizzes.schema.schema",
@@ -246,7 +217,8 @@ EMAIL_USE_TLS= True
 EMAIL_PORT= 587
 
 try:
-    from .custom_settings import *
+    pass
+    # from .custom_settings import *
 except ModuleNotFoundError:
     pass
 

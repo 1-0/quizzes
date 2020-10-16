@@ -4,10 +4,17 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.edit import FormView
+from django.template.response import TemplateResponse
 from django.http import HttpResponse
+from django.views.i18n import set_language
 from django.utils.translation import gettext as _
+from django.utils.translation import activate, get_language_from_request, get_supported_language_variant, override
+from django.utils.translation import (
+    LANGUAGE_SESSION_KEY, check_for_language, get_language,
+)
+from django.conf import settings
 from .models import Quizzes, Question, FS
 from .forms import QuizzesForm, QuestionForm
 
@@ -18,6 +25,9 @@ class Home(FormView):
     template_name = 'home.html'
 
     def get(self, request, *args, **kwargs):
+        lang_code = get_supported_language_variant(get_language_from_request(request))
+        override(lang_code)
+
         quizzes_all = self.model_class.objects.all().order_by('publ_d_time').reverse()
         paginator = Paginator(quizzes_all, 10)
         page_number = request.GET.get('page')
@@ -41,7 +51,7 @@ class QuizzesView(FormView):
         if not quizzes_id and not request.user.id:
             return redirect(r'/')
         if quizzes_id:
-            quizzes = self.model_class.objects.get(pk=quizzes_id)
+            quizzes = get_object_or_404(self.model_class, pk=quizzes_id)
             if request.user:
                 form = self.form_class(instance=quizzes)
             else:
@@ -118,7 +128,7 @@ class QuestionView(LoginRequiredMixin, FormView):
         if not question_id and not quizzes_id:
             return redirect(r'/')
         if quizzes_id and question_id:
-            question = self.model_class.objects.get(pk=question_id)
+            question = get_object_or_404(self.model_class, pk=question_id)
             if request.user:
                 form = self.form_class(instance=question)
             else:
@@ -184,4 +194,7 @@ class QuestionView(LoginRequiredMixin, FormView):
             },
         )
 
+
+def handle_404(request, exception=None):
+    return TemplateResponse(request, '404.html', status=404)
 

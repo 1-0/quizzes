@@ -14,7 +14,11 @@
           {% for language in languages %}
             <div class="radio">
               <label>
-                <input type="radio" name="language" value="{{ language.code}}" {% if language.code == LANGUAGE_CODE %}checked{% endif %}>
+                <input type="radio" name="language" value="{{ language.code}}"
+                       {% if language.code == LANGUAGE_CODE %}
+                            checked
+                       {% endif %}
+                >
                 {{ language.name_local }}
               </label>
             </div>

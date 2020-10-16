@@ -12,7 +12,7 @@ class UserInfo(forms.ModelForm):
         disabled=True
     )
     date_joined = forms.DateTimeField(
-        widget=forms.DateTimeInput(attrs={'type': 'email'}),
+        widget=forms.DateTimeInput(),
         disabled=True
     )
 

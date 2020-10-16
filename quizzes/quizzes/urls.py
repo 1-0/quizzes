@@ -27,10 +27,12 @@ from django.views.decorators.csrf import csrf_exempt
 from graphene_django.views import GraphQLView
 from .schema import schema
 from django.contrib.sitemaps.views import sitemap
+from django.conf.urls.i18n import *
 
-from .views import Home, QuizzesView, QuestionView
+from .views import Home, QuizzesView, QuestionView, handle_404
 from .api import api1
 
+handler404 = handle_404
 
 non_translatable_urlpatterns = [
     path("api1/", api1.urls),

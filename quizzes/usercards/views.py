@@ -1,5 +1,5 @@
 import logging
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -16,10 +16,7 @@ def show_user(request, user_name):
     """show_user - show user page"""
     forms = []
     valid_user = False
-    try:
-        user = User.objects.get(username=user_name)
-    except:
-        user = User()
+    user = get_object_or_404(User, username=user_name)
     try:
         user_data = UCard.objects.get(person_id=user.id)
     except:

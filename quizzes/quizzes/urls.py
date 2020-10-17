@@ -29,19 +29,20 @@ from .schema import schema
 from django.contrib.sitemaps.views import sitemap
 from django.conf.urls.i18n import *
 
-from .views import Home, QuizzesView, QuestionView, handle_404
+from .views import Home, QuizzesView, QuestionView, handle_404, handle_500
 from .api import api1
 
 handler404 = handle_404
+handler500 = handle_500
 
 non_translatable_urlpatterns = [
     path("api1/", api1.urls),
     path('admin/', admin.site.urls),
     url(r'^i18n/$', set_language, name='set_language'),
-    path('', Home.as_view(), name='home'),
+    path('', Home.as_view(), name='start'),
 ]
-
 translatable_urlpatterns = [
+    path('', Home.as_view(), name='home'),
     path('quizzes/', QuizzesView.as_view(), name='add_quizzes'),
     path('quizzes/<int:quizzes_id>', QuizzesView.as_view(), name='view_quizzes'),
     path('quizzes/<int:quizzes_id>/question/', QuestionView.as_view(), name='add_question'),

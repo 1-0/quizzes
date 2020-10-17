@@ -34,19 +34,19 @@ def get_bool_from_env(name, default_value):
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = get_bool_from_env('DEBUG', True)
-DEBUG = get_bool_from_env('DEBUG', False)
+DEBUG = get_bool_from_env('DEBUG', True)
+# DEBUG = get_bool_from_env('DEBUG', False)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 if DEBUG:
     SECRET_KEY = 'Enter secret key1'
 else:
     SECRET_KEY = os.environ.get('SECRET_KEY')
-SECRET_KEY = 'Enter secret key1'
+# SECRET_KEY = 'Enter secret key1'
 
 PROJECT_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), '..'))
 
-ALLOWED_HOSTS = ['127.0.0.1',]
+# ALLOWED_HOSTS = ['127.0.0.1',]
 
 
 # Application definition

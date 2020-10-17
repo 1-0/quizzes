@@ -1,14 +1,14 @@
-from django.views.generic import TemplateView
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import TemplateView
+from django.views.i18n import set_language
 from django.views.generic.edit import FormView
 from django.template.response import TemplateResponse
 from django.http import HttpResponse
-from django.views.i18n import set_language
 from django.utils.translation import gettext as _
 from django.utils.translation import activate, get_language_from_request, get_supported_language_variant, override
 from django.utils.translation import (
@@ -16,7 +16,7 @@ from django.utils.translation import (
 )
 from django.conf import settings
 from .models import Quizzes, Question, FS
-from .forms import QuizzesForm, QuestionForm
+from .forms import QuizzesForm, QuestionForm, EnterQuizzesForm
 
 
 class Home(FormView):
@@ -52,16 +52,10 @@ class QuizzesView(FormView):
             return redirect(r'/')
         if quizzes_id:
             quizzes = get_object_or_404(self.model_class, pk=quizzes_id)
-            if request.user:
-                form = self.form_class(instance=quizzes)
-            else:
-                return redirect(r'/')
+            form = self.form_class(instance=quizzes)
         else:
             quizzes = self.model_class()
-            if request.user:
-                form = self.form_class()
-            else:
-                return redirect(r'/')
+            form = self.form_class()
         return render(
             request,
             self.template_name,
@@ -129,16 +123,10 @@ class QuestionView(LoginRequiredMixin, FormView):
             return redirect(r'/')
         if quizzes_id and question_id:
             question = get_object_or_404(self.model_class, pk=question_id)
-            if request.user:
-                form = self.form_class(instance=question)
-            else:
-                return redirect(r'/')
+            form = self.form_class(instance=question)
         else:
             question = self.model_class()
-            if request.user:
-                form = self.form_class()
-            else:
-                return redirect(r'/')
+            form = self.form_class()
         return render(
             request,
             self.template_name,
@@ -193,6 +181,43 @@ class QuestionView(LoginRequiredMixin, FormView):
                 'question_id': question_id,
             },
         )
+
+
+class QuizzesEnter(LoginRequiredMixin, FormView):
+    """QuizzesEnter - view class for enter quizzes view page"""
+
+    login_url = '/accounts/login/'
+    model_class = Quizzes
+    form_class = EnterQuizzesForm
+    template_name = r"quizzes/enter_quizzes_form.html"
+
+    def get(self, request, quizzes_id=None, *args, **kwargs):
+        quizzes = get_object_or_404(self.model_class, pk=quizzes_id)
+        form = self.form_class(instance=quizzes)
+        return HttpResponse('''enter_quizzes %s <br> form %s''' % (quizzes.id, form.fields))
+
+# form ['Meta', '__class__', '__delattr__',
+#       '__dict__', '__dir__', '__doc__', '__eq__',
+#       '__format__', '__ge__', '__getattribute__',
+#       '__getitem__', '__gt__', '__hash__',
+#       '__html__', '__init__', '__init_subclass__',
+#       '__iter__', '__le__', '__lt__', '__module__',
+#       '__ne__', '__new__', '__reduce__', '__reduce_ex__',
+#       '__repr__', '__setattr__', '__sizeof__',
+#       '__str__', '__subclasshook__', '__weakref__',
+#       '_bound_fields_cache', '_clean_fields', '_clean_form',
+#       '_errors', '_get_validation_exclusions', '_html_output',
+#       '_meta', '_post_clean', '_save_m2m', '_update_errors',
+#       '_validate_unique', 'add_error', 'add_initial_prefix',
+#       'add_prefix', 'as_p', 'as_table', 'as_ul', 'auto_id',
+#       'base_fields', 'changed_data', 'clean', 'data', 'declared_fields',
+#       'default_renderer', 'empty_permitted', 'error_class',
+#       'errors', 'field_order', 'fields', 'files', 'full_clean',
+#       'get_initial_for_field', 'has_changed', 'has_error', 'hidden_fields',
+#       'initial', 'instance', 'is_bound', 'is_multipart', 'is_valid',
+#       'label_suffix', 'media', 'non_field_errors', 'order_fields',
+#       'prefix', 'renderer', 'save', 'use_required_attribute',
+#       'validate_unique', 'visible_fields']
 
 
 def handle_404(request, exception=None):

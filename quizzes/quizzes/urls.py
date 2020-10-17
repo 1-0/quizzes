@@ -27,9 +27,15 @@ from django.views.decorators.csrf import csrf_exempt
 from graphene_django.views import GraphQLView
 from .schema import schema
 from django.contrib.sitemaps.views import sitemap
-from django.conf.urls.i18n import *
 
-from .views import Home, QuizzesView, QuestionView, handle_404, handle_500
+from .views import (
+    Home,
+    QuizzesView,
+    QuestionView,
+    QuizzesEnter,
+    handle_404,
+    handle_500,
+)
 from .api import api1
 
 handler404 = handle_404
@@ -45,6 +51,7 @@ translatable_urlpatterns = [
     path('', Home.as_view(), name='home'),
     path('quizzes/', QuizzesView.as_view(), name='add_quizzes'),
     path('quizzes/<int:quizzes_id>', QuizzesView.as_view(), name='view_quizzes'),
+    path('enter_quizzes/<int:quizzes_id>', QuizzesEnter.as_view(), name='enter_quizzes'),
     path('quizzes/<int:quizzes_id>/question/', QuestionView.as_view(), name='add_question'),
     path('accounts/', include('allauth.urls')),
     path('usercards/', include('usercards.urls')),

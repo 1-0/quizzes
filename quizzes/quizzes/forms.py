@@ -64,3 +64,21 @@ class QuizzesForm(forms.ModelForm):
             'content': forms.Textarea(attrs={'type': 'html'}),
             # 'q_person': forms.HiddenInput(),
         }
+class EnterQuizzesForm(forms.ModelForm):
+
+    class Meta:
+        model = Quizzes
+        fields = (
+            'title',
+            'content',
+            'photo',
+            'is_publ',
+            # 'q_person',
+        )
+        labels = {
+            'title': _('Quizzes title'),
+            'content': _('Quizzes content'),
+            'photo': _('Quizzes image'),
+            'is_publ': _('Quizzes published'),
+            'publ_d_time': _('Quizzes published datetime'),
+        }

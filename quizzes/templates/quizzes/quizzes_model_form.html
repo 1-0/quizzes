@@ -34,8 +34,10 @@
             {{ quizzes.content }}
         </p>
     {% endif %}
-    <a href="{% url 'enter_quizzes' quizzes.id %}">
-        enter_quizzes {{ quizzes.id }}
-    </a>
+    {% if quizzes.q_person.id != user.id %}
+        <a href="{% url 'enter_quizzes' quizzes.id %}">
+            enter_quizzes {{ quizzes.id }}
+        </a>
+    {% endif %}
 </div>
 {% include "end.html" %}

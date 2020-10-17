@@ -64,7 +64,26 @@ class QuizzesForm(forms.ModelForm):
             'content': forms.Textarea(attrs={'type': 'html'}),
             # 'q_person': forms.HiddenInput(),
         }
-class EnterQuizzesForm(forms.ModelForm):
+
+
+class EnterAnswerForm(forms.Form):
+    photo = forms.ImageField()
+    content = forms.CharField()
+    readonly_fields = ('photo', 'content')
+    ordering = ['-id']
+
+    class Meta:
+        model = Answer
+        fields = (
+            'photo',
+            'content',
+        )
+
+
+EnterAnswerFormSet = forms.formset_factory(EnterAnswerForm)
+
+
+class EnterQuizzesForm(forms.Form):
 
     class Meta:
         model = Quizzes
@@ -72,13 +91,9 @@ class EnterQuizzesForm(forms.ModelForm):
             'title',
             'content',
             'photo',
-            'is_publ',
-            # 'q_person',
         )
         labels = {
             'title': _('Quizzes title'),
             'content': _('Quizzes content'),
             'photo': _('Quizzes image'),
-            'is_publ': _('Quizzes published'),
-            'publ_d_time': _('Quizzes published datetime'),
         }

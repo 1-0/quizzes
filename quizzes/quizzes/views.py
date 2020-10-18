@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView
 from django.views.i18n import set_language
+from django.views import generic
 from django.views.generic.edit import FormView
 from django.template.response import TemplateResponse
 from django.http import HttpResponse
@@ -19,24 +20,19 @@ from .models import Quizzes, Question, FS
 from .forms import QuizzesForm, QuestionForm, EnterQuizzesForm
 
 
-class Home(FormView):
+class Home(generic.ListView):
     """Home - view class for home page"""
     model_class = Quizzes
     template_name = 'home.html'
+    paginate_by = 10
 
-    def get(self, request, *args, **kwargs):
-        lang_code = get_supported_language_variant(get_language_from_request(request))
+    context_object_name = 'latest_quizzes_list'
+
+    def get_queryset(self, *args, **kwargs):
+        lang_code = get_supported_language_variant(get_language_from_request(self.request))
         override(lang_code)
 
-        quizzes_all = self.model_class.objects.all().order_by('publ_d_time').reverse()
-        paginator = Paginator(quizzes_all, 10)
-        page_number = request.GET.get('page')
-        quizzes_list = paginator.get_page(page_number)
-        return render(
-            request,
-            self.template_name,
-            {'quizzes_list': quizzes_list},
-        )
+        return self.model_class.objects.order_by('-publ_d_time')
 
 
 class QuizzesView(FormView):
@@ -48,8 +44,6 @@ class QuizzesView(FormView):
     readonly_fields = ('published_datetime',)
 
     def get(self, request, quizzes_id=None, *args, **kwargs):
-        if not quizzes_id and not request.user.id:
-            return redirect(r'/')
         if quizzes_id:
             quizzes = get_object_or_404(self.model_class, pk=quizzes_id)
             form = self.form_class(instance=quizzes)
@@ -184,16 +178,15 @@ class QuestionView(LoginRequiredMixin, FormView):
 
 
 class QuizzesEnter(LoginRequiredMixin, FormView):
+# class QuizzesEnter(LoginRequiredMixin, FormView):
     """QuizzesEnter - view class for enter quizzes view page"""
 
     login_url = '/accounts/login/'
-    model_class = Quizzes
-    form_class = EnterQuizzesForm
     template_name = r"quizzes/enter_quizzes_form.html"
 
     def get(self, request, quizzes_id=None, *args, **kwargs):
         quizzes = get_object_or_404(self.model_class, pk=quizzes_id)
-        form = self.form_class()
+        # form = self.form_class()
         # form = self.form_class(instance=quizzes)
         return HttpResponse('''enter_quizzes %s <br> form %s''' % (quizzes.id, form.fields))
 

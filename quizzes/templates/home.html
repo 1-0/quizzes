@@ -11,29 +11,29 @@
         Please Log In For Manipulating Quizzes
     </p>
     {% endif %}
-    {% if quizzes_list %}
+    {% if object_list %}
         <h3>Quizzes List</h3>
-        {% for quizzes in quizzes_list %}
+        {% for quizzes in object_list %}
             <p>
                 <a href="{% url 'view_quizzes' quizzes.id %}" class="waves-effect waves-light">
-                    <b> {{ quizzes.title }} </b>  by {{ quizzes.q_person.username }} (<i>{{ quizzes.publ_d_time }} UTC</i>)
+                    <b> {{ quizzes.title }} </b>  by {{ quizzes.q_person.username }} (<i>{{ quizzes.publ_d_time }}</i>)
                 </a>
             </p>
         {% endfor %}
     {% endif %}
-    {% if quizzes_list.paginator.num_pages > 1 %}
+    {% if page_obj.paginator.num_pages > 1 %}
         <div class="pagination">
             <span class="step-links">
-                {% if quizzes_list.has_previous %}
+                {% if page_obj.has_previous %}
                     <a class="btn" href="?page=1">&laquo; first</a>
-                    <a class="btn" href="?page={{ quizzes_list.previous_page_number }}">previous</a>
+                    <a class="btn" href="?page={{ page_obj.previous_page_number }}">previous</a>
                 {% endif %}
                 <span class="current">
-                    Page {{ quizzes_list.number }} of {{ quizzes_list.paginator.num_pages }}.
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
                 </span>
-                {% if quizzes_list.has_next %}
-                    <a class="btn" href="?page={{ quizzes_list.next_page_number }}">next</a>
-                    <a class="btn" href="?page={{ quizzes_list.paginator.num_pages }}">last &raquo;</a>
+                {% if page_obj.has_next %}
+                    <a class="btn" href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a class="btn" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
                 {% endif %}
             </span>
         </div>

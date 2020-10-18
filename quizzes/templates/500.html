@@ -1,8 +1,9 @@
-{% include "navbar.html" %}
-{% load i18n %}
+{% extends "base.html" %}
 
+{% block title %}
+    Quizzes Error 500
+{% endblock %}
 {% block content %}
   <h1 class="text-center mt-5">500</h1>
   <div class="text-center">{% trans 'External error' context 'Eror in server side' %}</div>
 {% endblock %}
-{% include "end.html" %}

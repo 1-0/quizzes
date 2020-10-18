@@ -1,21 +1,30 @@
-{% include "navbar.html" %}
+{% extends "base.html" %}
 
-<h1 class="center-align">Quizzes question</h1>
-<div class="center-align">
-    {% if question.photo %}
-        <p>
-            <img src="/static/media/question/{{ question.photo.name }}" alt="question ''{{ question.id }}'' image">
-{#            <img src="{% static quizzes.photo.url %}" alt="quizzes ''{{ quizzes.title }}'' image" width="250" height="250">#}
-        <p/>
+{% block title %}
+    Quizzes {{ quizzes_id }} question
+    {% if question.id %}
+        {{ question.id }} editing
+    {% else %}
+        adding
     {% endif %}
-    {% if user.is_authenticated %}
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="waves-effect waves-light btn" type="submit">
-                <i class="material-icons left ">save</i> Save
-            </button>
-        </form>
-    {% endif %}
-</div>
-{% include "end.html" %}
+{% endblock %}
+{% block content %}
+    <h1 class="center-align">Quizzes question</h1>
+    <div class="center-align">
+        {% if question.photo %}
+            <p>
+                <img src="/static/media/question/{{ question.photo.name }}" alt="question ''{{ question.id }}'' image">
+    {#            <img src="{% static quizzes.photo.url %}" alt="quizzes ''{{ quizzes.title }}'' image" width="250" height="250">#}
+            <p/>
+        {% endif %}
+        {% if user.is_authenticated %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="waves-effect waves-light btn" type="submit">
+                    <i class="material-icons left ">save</i> Save
+                </button>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

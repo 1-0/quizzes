@@ -1,8 +1,9 @@
-{% include "navbar.html" %}
-{% load i18n %}
+{% extends "base.html" %}
 
+{% block title %}
+    Quizzes Error 404
+{% endblock %}
 {% block content %}
   <h1 class="text-center mt-5">404</h1>
   <div class="text-center">{% trans 'Page not found' context 'Eror page not found' %}</div>
 {% endblock %}
-{% include "end.html" %}

@@ -1,35 +1,38 @@
-{% include "navbar.html" %}
+{% extends "base.html" %}
 
-<div class="center-align">
-    <h1>
-        User card all for {{ user_name }}
-    </h1>
-    {% if user_data.photo %}
-        <p>
-        {% load static %}
-            <img src="/static/media/users/{{ user_data.photo.name }}" alt="User {{ user_name }} image">
-{#            <img src="{% static user_data.photo.url %}" alt="User {{ user_name }} image">#}
-        <p/>
-    {% endif %}
-
-    {% if valid_user %}
-        <a href="{% url 'account_set_password' %}" class="waves-effect waves-light btn">
-            <i class="material-icons left ">call_made</i> Set password
-        </a>
-        <a href="{% url 'account_reset_password' %}" class="waves-effect waves-light btn">
-            <i class="material-icons left ">call_missed_outgoing</i> Reset password
-        </a>
-    {% endif %}
-    <form method="post" enctype="multipart/form-data">
-        {% for form in forms %}
-                {% csrf_token %}
-                {{ form.as_p }}
-        {% endfor %}
-        {% if valid_user %}
-            <button class="waves-effect waves-light btn" type="submit">
-                <i class="material-icons left ">save</i> Save
-            </button>
+{% block title %}
+    User card for {{ user_name }}
+{% endblock %}
+{% block content %}
+    <div class="center-align">
+        <h1>
+            User card for {{ user_name }}
+        </h1>
+        {% if user_data.photo %}
+            <p>
+                <img src="/static/media/users/{{ user_data.photo.name }}" alt="User {{ user_name }} image">
+            <p/>
         {% endif %}
-    </form>
-    {% include "end.html" %}
-</div>
+        {% if valid_user %}
+            <a href="{% url 'account_set_password' %}" class="waves-effect waves-light btn">
+                <i class="material-icons left ">call_made</i> Set password
+            </a>
+            <a href="{% url 'account_reset_password' %}" class="waves-effect waves-light btn">
+                <i class="material-icons left ">call_missed_outgoing</i> Reset password
+            </a>
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+            {% for form in forms %}
+                    {% csrf_token %}
+                    {{ form.as_p }}
+            {% endfor %}
+            {% if valid_user %}
+                <button class="waves-effect waves-light btn" type="submit">
+                    <i class="material-icons left ">save</i>
+                    Save
+                </button>
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}
+

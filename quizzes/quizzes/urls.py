@@ -29,7 +29,7 @@ from .schema import schema
 from django.contrib.sitemaps.views import sitemap
 
 from .views import (
-    Home,
+    QuizzesIndexView,
     QuizzesView,
     QuestionView,
     QuizzesEnter,
@@ -45,10 +45,10 @@ non_translatable_urlpatterns = [
     path("api1/", api1.urls),
     path('admin/', admin.site.urls),
     url(r'^i18n/$', set_language, name='set_language'),
-    path('', Home.as_view(), name='start'),
+    path('', QuizzesIndexView.as_view(), name='start'),
 ]
 translatable_urlpatterns = [
-    path('', Home.as_view(), name='home'),
+    path('', QuizzesIndexView.as_view(), name='home'),
     path('quizzes/', QuizzesView.as_view(), name='add_quizzes'),
     path('quizzes/<int:quizzes_id>', QuizzesView.as_view(), name='view_quizzes'),
     path('enter_quizzes/<int:quizzes_id>', QuizzesEnter.as_view(), name='enter_quizzes'),

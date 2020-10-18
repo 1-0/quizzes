@@ -2,37 +2,32 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView
-from django.views.i18n import set_language
+from django.core.paginator import Paginator
 from django.views import generic
 from django.views.generic.edit import FormView
 from django.template.response import TemplateResponse
 from django.http import HttpResponse
 from django.utils.translation import gettext as _
 from django.utils.translation import activate, get_language_from_request, get_supported_language_variant, override
-from django.utils.translation import (
-    LANGUAGE_SESSION_KEY, check_for_language, get_language,
-)
 from django.conf import settings
 from .models import Quizzes, Question, FS
 from .forms import QuizzesForm, QuestionForm, EnterQuizzesForm
 
 
-class Home(generic.ListView):
-    """Home - view class for home page"""
-    model_class = Quizzes
-    template_name = 'home.html'
+class QuizzesIndexView(generic.ListView):
+    """QuizzesIndexView - view class for home and index page"""
     paginate_by = 10
-
-    context_object_name = 'latest_quizzes_list'
+    model_class = Quizzes
+    template_name = 'quizzes_index.html'
+    ordering = '-publ_d_time'
+    context_object_name = 'quizzes_list'
 
     def get_queryset(self, *args, **kwargs):
         lang_code = get_supported_language_variant(get_language_from_request(self.request))
         override(lang_code)
-
-        return self.model_class.objects.order_by('-publ_d_time')
+        return self.model_class.objects.all()
 
 
 class QuizzesView(FormView):
@@ -178,7 +173,6 @@ class QuestionView(LoginRequiredMixin, FormView):
 
 
 class QuizzesEnter(LoginRequiredMixin, FormView):
-# class QuizzesEnter(LoginRequiredMixin, FormView):
     """QuizzesEnter - view class for enter quizzes view page"""
 
     login_url = '/accounts/login/'

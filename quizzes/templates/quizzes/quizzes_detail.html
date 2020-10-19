@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Quizzes
+    {% if quizzes.id %}
+        {{ quizzes.id }}
+    {% else %}
+        view
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <h1 class="center-align">Quizzes</h1>
+    <div class="center-align">
+        {% if quizzes.photo %}
+            <p>
+                <img src="/static/media/quizzes/{{ quizzes.photo.name }}" alt="quizzes ''{{ quizzes.title }}'' image">
+{#                <img src="{% static quizzes.photo.name %}" alt="quizzes ''{{ quizzes.title }}'' image" width="250" height="250">#}
+            <p/>
+        {% endif %}
+        {% if quizzes.publ_d_time %}
+            <p>Published at:
+                {{ quizzes.publ_d_time }}
+            </p>
+        {% endif %}
+        <h5>
+            {{ quizzes.title }} by {{ quizzes.q_person.username }}
+        </h5>
+        <p>
+            {{ quizzes.content }}
+        </p>
+        {% if quizzes.q_person.id == user.id %}
+            <a href="{% url 'edit_quizzes' quizzes.id %}">
+                edit quizzes {{ quizzes.id }}
+            </a>
+        {% else %}
+            <a href="{% url 'enter_quizzes' quizzes.id %}">
+                enter quizzes {{ quizzes.id }}
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}

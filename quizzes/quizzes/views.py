@@ -10,7 +10,7 @@ from django.views.generic.edit import FormView
 from django.template.response import TemplateResponse
 from django.http import HttpResponse
 from django.utils.translation import gettext as _
-from django.utils.translation import activate, get_language_from_request, get_supported_language_variant, override
+from django.utils.translation import get_language_from_request, override
 from django.conf import settings
 from .models import Quizzes, Question, FS
 from .forms import QuizzesForm, QuestionForm, EnterQuizzesForm
@@ -25,22 +25,36 @@ class QuizzesIndexView(generic.ListView):
     context_object_name = 'quizzes_list'
 
     def get_queryset(self, *args, **kwargs):
-        lang_code = get_supported_language_variant(get_language_from_request(self.request))
+        lang_code = get_language_from_request(self.request)
         override(lang_code)
         return self.model_class.objects.all()
 
 
+class QuizzesDetailView(generic.DetailView):
+    """QuizzesDetailView - view class for quizzes detail view page"""
+
+    model_class = Quizzes
+    template_name = r"quizzes/quizzes_detail.html"
+
+    # def __init__(self, *args, quizzes_id=0, **kwargs):
+    #     self.quizzes_id = quizzes_id
+    #     super().__init__(*args, **kwargs)
+    #
+    def get_queryset(self, *args, **kwargs):
+        return self.model_class.objects.all()
+
+
 class QuizzesView(FormView):
-    """QuizzesView - view class for quizzes view page"""
+    """QuizzesView - view class for quizzes form page"""
 
     model_class = Quizzes
     form_class = QuizzesForm
     template_name = r"quizzes/quizzes_model_form.html"
     readonly_fields = ('published_datetime',)
 
-    def get(self, request, quizzes_id=None, *args, **kwargs):
-        if quizzes_id:
-            quizzes = get_object_or_404(self.model_class, pk=quizzes_id)
+    def get(self, request, pk=None, *args, **kwargs):
+        if pk:
+            quizzes = get_object_or_404(self.model_class, pk=pk)
             form = self.form_class(instance=quizzes)
         else:
             quizzes = self.model_class()
@@ -51,14 +65,14 @@ class QuizzesView(FormView):
             {
                 'form': form,
                 'quizzes': quizzes,
-                'quizzes_id': quizzes_id,
+                'quizzes_id': pk,
             },
         )
 
-    def post(self, request, quizzes_id=None, *args, **kwargs):
+    def post(self, request, pk=None, *args, **kwargs):
         photo_quizzes = None
-        if quizzes_id:
-            quizzes = self.model_class.objects.get(pk=quizzes_id)
+        if pk:
+            quizzes = self.model_class.objects.get(pk=pk)
         else:
             quizzes = self.model_class()
         form = self.form_class(
@@ -94,7 +108,7 @@ class QuizzesView(FormView):
             {
                 'form': form,
                 'quizzes': quizzes,
-                'quizzes_id': quizzes_id,
+                'quizzes_id': pk,
             },
         )
 
@@ -177,12 +191,13 @@ class QuizzesEnter(LoginRequiredMixin, FormView):
 
     login_url = '/accounts/login/'
     template_name = r"quizzes/enter_quizzes_form.html"
+    model_class = Quizzes
 
-    def get(self, request, quizzes_id=None, *args, **kwargs):
-        quizzes = get_object_or_404(self.model_class, pk=quizzes_id)
+    def get(self, request, pk=None, *args, **kwargs):
+        quizzes = get_object_or_404(self.model_class, pk=pk)
         # form = self.form_class()
         # form = self.form_class(instance=quizzes)
-        return HttpResponse('''enter_quizzes %s <br> form %s''' % (quizzes.id, form.fields))
+        return HttpResponse('''enter_quizzes %s <br>''' % (pk,))
 
 
 def handle_404(request, exception=None):

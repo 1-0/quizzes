@@ -30,6 +30,7 @@ from django.contrib.sitemaps.views import sitemap
 
 from .views import (
     QuizzesIndexView,
+    QuizzesDetailView,
     QuizzesView,
     QuestionView,
     QuizzesEnter,
@@ -50,8 +51,9 @@ non_translatable_urlpatterns = [
 translatable_urlpatterns = [
     path('', QuizzesIndexView.as_view(), name='home'),
     path('quizzes/', QuizzesView.as_view(), name='add_quizzes'),
-    path('quizzes/<int:quizzes_id>', QuizzesView.as_view(), name='view_quizzes'),
-    path('enter_quizzes/<int:quizzes_id>', QuizzesEnter.as_view(), name='enter_quizzes'),
+    path('quizzes/<int:pk>', QuizzesDetailView.as_view(), name='view_quizzes'),
+    path('quizzes/edit/<int:pk>', QuizzesView.as_view(), name='edit_quizzes'),
+    path('enter_quizzes/<int:pk>', QuizzesEnter.as_view(), name='enter_quizzes'),
     path('quizzes/<int:quizzes_id>/question/', QuestionView.as_view(), name='add_question'),
     path('accounts/', include('allauth.urls')),
     path('usercards/', include('usercards.urls')),

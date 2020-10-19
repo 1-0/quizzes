@@ -1,5 +1,9 @@
-{% include "navbar.html" %}
-{% load static %}
+{% extends "base.html" %}
+
+{% block title %}
+    Quizzess account
+{% endblock %}
+{% block content %}
 <link href="{% static 'css/card.css' %}" rel="stylesheet">
 <div class="row center-align">
     <div class="col s12 m6">
@@ -9,10 +13,10 @@
               <a href="{% url 'home' %}">Quizzess Django</a>/{% block head_title %}{% endblock %}
             </span>
                 <p>
-                    {% block content %} {% endblock %}
+
                 </p>
             </div>
         </div>
     </div>
 </div>
-{% include "end.html" %}
+{% endblock %}
